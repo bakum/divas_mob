@@ -10,6 +10,9 @@
         </resource-bundle>        
         <navigation-handler>
             org.primefaces.mobile.application.MobileNavigationHandler
-        </navigation-handler>        
+        </navigation-handler>
+        <lifecycle>
+            <phase-listener id="nocache">ua.divas.mob.util.CacheControlPhaseListener</phase-listener>
+        </lifecycle>        
     </application>
 </faces-config>

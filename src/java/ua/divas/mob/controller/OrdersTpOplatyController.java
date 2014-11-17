@@ -43,7 +43,6 @@ public class OrdersTpOplatyController implements Serializable {
 
     public void setMaster(Orders master) {
         this.master = master;
-        System.out.println(master.toString());
     }
 
     public OrdersTpOplaty getSelected() {
@@ -79,9 +78,8 @@ public class OrdersTpOplatyController implements Serializable {
 
     public String refresh() {
         if (items != null) {
-            this.items.clear();
+            items = null;
         }
-        this.getItems();
         return "pm:listOplat";
     }
 
@@ -93,15 +91,17 @@ public class OrdersTpOplatyController implements Serializable {
         return selected;
     }
 
-    public void create() {
+    public String create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("OrdersTpOplatyCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
+        return "pm:listOplat?transition=flip";
     }
 
-    public void update() {
+    public String update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("OrdersTpOplatyUpdated"));
+        return "pm:listOplat?transition=flip";
     }
 
     public void destroy() {
@@ -128,6 +128,7 @@ public class OrdersTpOplatyController implements Serializable {
                         getFacade().edit(selected);
                     } else {
                         getFacade().create(selected);
+                        getMaster().getOrdersTpOplatyCollection().add(selected);
                     }
                 } else {
                     getFacade().remove(selected);

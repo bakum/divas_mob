@@ -6,8 +6,10 @@ import ua.divas.mob.util.JsfUtil.PersistAction;
 import ua.divas.mob.session.OrdersTpUslugiFacade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -18,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import ua.divas.mob.entity.Orders;
 
 @ManagedBean(name = "ordersTpUslugiController")
 @SessionScoped
@@ -27,8 +30,17 @@ public class OrdersTpUslugiController implements Serializable {
     private ua.divas.mob.session.OrdersTpUslugiFacade ejbFacade;
     private List<OrdersTpUslugi> items = null;
     private OrdersTpUslugi selected;
+    private Orders master;
 
     public OrdersTpUslugiController() {
+    }
+
+    public Orders getMaster() {
+        return master;
+    }
+
+    public void setMaster(Orders master) {
+        this.master = master;
     }
 
     public OrdersTpUslugi getSelected() {
@@ -43,6 +55,9 @@ public class OrdersTpUslugiController implements Serializable {
     }
 
     protected void initializeEmbeddableKey() {
+        selected.setId(UUID.randomUUID().toString());
+        selected.setOrderId(master);
+        selected.setDatToPay(new Date());
     }
 
     private OrdersTpUslugiFacade getFacade() {
@@ -86,7 +101,12 @@ public class OrdersTpUslugiController implements Serializable {
             setEmbeddableKeys();
             try {
                 if (persistAction != PersistAction.DELETE) {
-                    getFacade().edit(selected);
+                    if (persistAction != PersistAction.CREATE) {
+                        getFacade().edit(selected);
+                    } else {
+                        getFacade().create(selected);
+                        getMaster().getOrdersTpUslugiCollection().add(selected);
+                    }
                 } else {
                     getFacade().remove(selected);
                 }

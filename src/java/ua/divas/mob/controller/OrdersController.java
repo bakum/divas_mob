@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import ua.divas.mob.entity.OrdersTpOplaty;
+import ua.divas.mob.entity.OrdersTpUslugi;
 
 @ManagedBean(name = "orders")
 @SessionScoped
@@ -35,9 +36,9 @@ public class OrdersController implements Serializable {
     
     public String refresh() {
         if (items != null) {
-            this.items.clear();
+            items = null;
         }
-        this.getItems();
+        //this.getItems();
         return "pm:list";
     }
 
@@ -68,6 +69,29 @@ public class OrdersController implements Serializable {
 
         } else {
             return "Заказ не оплачен!";
+        }
+    }
+    
+    public boolean haveZamer() {
+        Orders sl = this.getSelected();
+        int c = sl.getOrdersTpUslugiCollection().size();
+        return c != 0;
+    }
+    
+    public String zamerStatus() {
+        String r;
+        double sum = 0.0;
+        Orders sl = this.getSelected();
+        int c = sl.getOrdersTpUslugiCollection().size();
+        if (c != 0) {
+            for (OrdersTpUslugi next : sl.getOrdersTpUslugiCollection()) {                
+                sum = sum + next.getSumm().floatValue();
+            }
+            r = String.valueOf(sum);
+            return "Итого на сумму: "+r+" грн";
+
+        } else {
+            return "Работы не определены";
         }
     }
 
@@ -131,6 +155,9 @@ public class OrdersController implements Serializable {
     public List<Orders> getItems() {
         if (items == null) {
             items = getFacade().findAll();
+//            for (Orders item : items) {
+//                item.getOrdersTpOplatyCollection().addAll(null);
+//            }
         }
         return items;
     }

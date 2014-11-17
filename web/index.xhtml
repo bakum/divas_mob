@@ -4,8 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pm="http://primefaces.org/mobile"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:pm="http://primefaces.org/mobile">
 
     <f:view renderKitId="PRIMEFACES_MOBILE" />
 
@@ -30,11 +29,12 @@
 
                             </p:commandButton>
                         </f:facet>                        
-                        <p:commandLink update =":viewTask:editForm:editFormPanel, :listOplat:listOplForm:datalist" action="pm:viewTask">
+                        <p:commandLink update =":viewTask:editForm:editFormPanel, :listOplat:listOplForm:datalist, :uslugiList:listUslForm:listusl" action="pm:viewTask">
                             <h2>#{item.kontragId.fullname}</h2> 
                             <p>Номер заказа: #{item.num}</p>
                             <f:setPropertyActionListener value="#{item}" target="#{orders.selected}" />
                             <f:setPropertyActionListener value="#{item}" target="#{ordersTpOplatyController.master}" />
+                            <f:setPropertyActionListener value="#{item}" target="#{ordersTpUslugiController.master}" />
                         </p:commandLink>
                         <f:facet name="footer">
                             Замеры
@@ -92,7 +92,7 @@
                                 <p:outputLabel style="font-weight: bold;" value="#{contact.phone}"/>
                                 <p:outputLabel style="font-size: 0.75em;" value="#{contact.adress}" rendered="#{!empty contact.adress}"/>
                                 <f:setPropertyActionListener value="#{contact}" target="#{contactDetailsController.selected}" />
-                              
+
                                 <f:setPropertyActionListener  value="selected" target="#{contactDetailsController.selectedAdressCoordinates}"/>
                             </p:commandLink>
                         </p:dataList>
@@ -106,7 +106,7 @@
                     </p:outputPanel>
 
                 </h:form>
-                <p:commandButton value="Перечень работ" icon="ui-icon-check"/>
+                <p:button value="Перечень работ" icon="ui-icon-check" outcome="pm:uslugiList"/>
                 <p:button value="Оплаты" icon="ui-icon-check" outcome="pm:listOplat"/>
             </pm:content>
             <pm:footer>
@@ -145,7 +145,7 @@
 
                     </p:panelGrid>
                     <p:commandButton update=":map:mapForm:coordstr" value="Найти" onclick="handleViewChange('map')" action="pm:map?transition=flip" icon="ui-icon-check">
-                        
+
                     </p:commandButton>                    
                 </h:form>
             </pm:content>
@@ -184,10 +184,8 @@
                         <p:dataList id="datalist" var="oplitem" value="#{orders.selected.ordersTpOplatyCollection}">
                             <f:facet name="header"> 
                                 <p:outputLabel style="text-align: center; font-weight: bold;" value="#{orders.selected.kontragId.fullname}"/>
-                                <p:commandButton immediate="true" value="Обновить оплаты" icon="ui-icon-check" update=":listOplat:listOplForm:datalist" 
-                                                 action="#{ordersTpOplatyController.refresh()}">
 
-                                </p:commandButton>
+
                                 <p:commandButton value="Добавить оплату" icon="ui-icon-plus" 
                                                  update =":viewOplata:viewOplForm" action="pm:viewOplata?transition=pop"
                                                  actionListener="#{ordersTpOplatyController.prepareCreate}">
@@ -308,6 +306,39 @@
                         <p:button value="Отменить" outcome="pm:listOplat?transition=flip" icon="ui-icon-check"/>
                     </p:panelGrid>
                 </h:form>
+            </pm:content>
+        </pm:page>
+
+        <pm:page id="uslugiList" lazy="true">
+            <pm:header title="Работы">
+                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-arrow-l" outcome="pm:viewTask?transition=flip"/>
+                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-arrow-r" outcome="pm:list?transition=flip"/>
+            </pm:header>
+            <pm:content>
+                <p:outputPanel>
+
+                    <h:form id="listUslForm" rendered="#{orders.selected != null}">
+                        <p:growl id="msgsusl" showDetail="false" />
+
+                        <p:dataList id="listusl" var="uslitem" value="#{orders.selected.ordersTpUslugiCollection}">
+                            <f:facet name="header"> 
+                                <p:outputLabel style="text-align: center; font-weight: bold;" value="#{orders.selected.kontragId.fullname}"/>
+
+
+                                <p:commandButton value="Добавить работу" icon="ui-icon-plus" 
+                                                 update =":uslugiList:listUslForm"
+                                                 actionListener="#{ordersTpUslugiController.prepareCreate}">
+                                </p:commandButton>
+                            </f:facet>    
+
+                            <f:facet name="footer">
+                                <p:outputLabel rendered="#{!orders.haveZamer()}" style="color: red" id="statusza" value="#{orders.zamerStatus()}" />
+                                <p:outputLabel rendered="#{orders.haveZamer()}" style="color: blue" id="statuszam" value="#{orders.zamerStatus()}" />
+                            </f:facet>    
+                        </p:dataList>
+                    </h:form>
+                </p:outputPanel>
+
             </pm:content>
         </pm:page>
     </h:body>

@@ -251,7 +251,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "ua.divas.mob.entity.Users[ id=" + id + " ]";
+        return login;
     }
 
     public UserSettings getUserSettings() {
