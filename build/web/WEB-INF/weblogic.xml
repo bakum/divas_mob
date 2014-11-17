@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.0/weblogic-web-app.xsd">
+    <jsp-descriptor>
+        <keepgenerated>true</keepgenerated>
+        <debug>true</debug>
+    </jsp-descriptor>
+    <context-root>/divas_mob</context-root>
+    <library-ref>
+        <library-name>jsf</library-name>
+        <specification-version>2.1</specification-version>
+        <implementation-version>2.1.7-01-</implementation-version>
+    </library-ref>
+    <security-role-assignment>
+        <role-name>administrator</role-name>
+        <principal-name>administrator</principal-name>
+    </security-role-assignment>
+</weblogic-web-app>
