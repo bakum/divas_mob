@@ -14,6 +14,7 @@ import ua.divas.mob.entity.Kontragents;
 import ua.divas.mob.entity.OrderStatus;
 import ua.divas.mob.entity.Orders;
 import ua.divas.mob.entity.Users;
+import ua.divas.mob.util.WLS_Utility;
 
 /**
  *
@@ -21,6 +22,7 @@ import ua.divas.mob.entity.Users;
  */
 @Stateless
 public class OrdersFacade extends AbstractFacade<Orders> {
+
     @PersistenceContext(unitName = "divas_mobPU")
     private EntityManager em;
 
@@ -32,7 +34,7 @@ public class OrdersFacade extends AbstractFacade<Orders> {
     public OrdersFacade() {
         super(Orders.class);
     }
-    
+
     @Override
     public void remove(Orders entity) {
         short del = 1;
@@ -40,17 +42,17 @@ public class OrdersFacade extends AbstractFacade<Orders> {
         super.edit(entity);
         //super.remove(entity); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    private DataQuery getQuery(){
+
+    private DataQuery getQuery() {
         return new DataQuery();
     }
-    
-    private OrderStatus getStatus(){
+
+    private OrderStatus getStatus() {
         DataQuery q = getQuery();
-        return q.getZamerOrderStatus();        
+        return q.getZamerOrderStatus();
     }
-    
-    private Kontragents getZamer(){
+
+    private Kontragents getZamer() {
         String un = "username";
         DataQuery q = getQuery();
         q.getSessionScopeAttr(un);
@@ -60,11 +62,21 @@ public class OrdersFacade extends AbstractFacade<Orders> {
 
     @Override
     public List<Orders> findAll() {
-        return getEntityManager().createNamedQuery("Orders.findAll", Orders.class)
-                .setParameter("statusid", this.getStatus())
-                .setParameter("zamerid", this.getZamer())
-                .getResultList();
+        DataQuery q = getQuery();
+        boolean admin = WLS_Utility.isMember("administrator", q.getSessionScopeAttr("username"), true);
+        if (admin) {
+            return getEntityManager().createNamedQuery("Orders.findAllForAdmin", Orders.class)
+                    .setParameter("statusid", this.getStatus())
+                    .getResultList();
+
+        } else {
+            return getEntityManager().createNamedQuery("Orders.findAll", Orders.class)
+                    .setParameter("statusid", this.getStatus())
+                    .setParameter("zamerid", this.getZamer())
+                    .getResultList();
+
+        }
         //return super.findAll(); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

@@ -19,6 +19,7 @@ import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
+import ua.divas.mob.util.WLS_Utility;
 import weblogic.security.URLCallbackHandler;
 import weblogic.servlet.security.ServletAuthentication;
 
@@ -68,6 +69,9 @@ public class LoginController implements Serializable{
             Map sessionScope = ctx.getExternalContext().getSessionMap();
             sessionScope.put(this.USERNAMETOKEN, un);
             //sessionScope.put(this.PASSWORDTOKEN, new String(pw));
+            
+            boolean admin = WLS_Utility.isMember("administrator", un, true);
+            //System.out.println("Administrator: "+admin);
             
             return "index.xhtml?faces-redirect=true";
             

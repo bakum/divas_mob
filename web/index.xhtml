@@ -31,7 +31,7 @@
                         </f:facet>                        
                         <p:commandLink update =":viewTask:editForm:editFormPanel, :listOplat:listOplForm:datalist, :uslugiList:listUslForm:listusl" action="pm:viewTask">
                             <h2>#{item.kontragId.fullname}</h2> 
-                            <p>Номер заказа: #{item.num}</p>
+                            <p>Номер заказа: #{item.num}</p> <p>Замерщик: #{item.zamerId.fullname}</p>
                             <f:setPropertyActionListener value="#{item}" target="#{orders.selected}" />
                             <f:setPropertyActionListener value="#{item}" target="#{ordersTpOplatyController.master}" />
                             <f:setPropertyActionListener value="#{item}" target="#{ordersTpUslugiController.master}" />
