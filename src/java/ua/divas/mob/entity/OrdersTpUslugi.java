@@ -38,6 +38,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OrdersTpUslugi.findByDatComplete", query = "SELECT o FROM OrdersTpUslugi o WHERE o.datComplete = :datComplete"),
     @NamedQuery(name = "OrdersTpUslugi.findByDatToPay", query = "SELECT o FROM OrdersTpUslugi o WHERE o.datToPay = :datToPay")})
 public class OrdersTpUslugi implements Serializable {
+    @JoinColumn(name = "MEASURE_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
+    private MeasureUnit measureId;
+    @JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")
+    @ManyToOne
+    private Nomenklatura groupId;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -173,6 +179,22 @@ public class OrdersTpUslugi implements Serializable {
     @Override
     public String toString() {
         return "ua.divas.mob.entity.OrdersTpUslugi[ id=" + id + " ]";
+    }
+
+    public MeasureUnit getMeasureId() {
+        return measureId;
+    }
+
+    public void setMeasureId(MeasureUnit measureId) {
+        this.measureId = measureId;
+    }
+
+    public Nomenklatura getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Nomenklatura groupId) {
+        this.groupId = groupId;
     }
     
 }

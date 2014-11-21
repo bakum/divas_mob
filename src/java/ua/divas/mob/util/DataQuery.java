@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import ua.divas.mob.entity.Kontragents;
+import ua.divas.mob.entity.Nomenklatura;
 import ua.divas.mob.entity.OrderStatus;
 import ua.divas.mob.entity.UserSettings;
 import ua.divas.mob.entity.Users;
@@ -52,6 +53,21 @@ public class DataQuery {
         try {
             Kontragents u = em.createNamedQuery("Kontragents.findByFullname", Kontragents.class)
                     .setParameter("fullname", key)
+                    .getSingleResult();
+            if (u != null) {
+                return u;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }    
+        
+    }
+    
+     public Nomenklatura getParentForZamer(){
+        try {
+            Nomenklatura u = em.createNamedQuery("Nomenklatura.findByFullname", Nomenklatura.class)
+                    .setParameter("fullname", "Услуги")
                     .getSingleResult();
             if (u != null) {
                 return u;

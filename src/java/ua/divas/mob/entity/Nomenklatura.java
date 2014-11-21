@@ -35,8 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Nomenklatura.findAll", query = "SELECT n FROM Nomenklatura n"),
+    @NamedQuery(name = "Nomenklatura.findByParent", query = "SELECT n FROM Nomenklatura n WHERE n.parentId = :parentid and n.isGroup = 1"),
+    @NamedQuery(name = "Nomenklatura.findByParentGr", query = "SELECT n FROM Nomenklatura n WHERE n.parentId = :parentid and n.isGroup = 0"),
     @NamedQuery(name = "Nomenklatura.findById", query = "SELECT n FROM Nomenklatura n WHERE n.id = :id"),
-    @NamedQuery(name = "Nomenklatura.findByFullname", query = "SELECT n FROM Nomenklatura n WHERE n.fullname = :fullname"),
+    @NamedQuery(name = "Nomenklatura.findByFullname", query = "SELECT n FROM Nomenklatura n WHERE UPPER(n.fullname) = UPPER(:fullname)"),
     @NamedQuery(name = "Nomenklatura.findByDeleted", query = "SELECT n FROM Nomenklatura n WHERE n.deleted = :deleted"),
     @NamedQuery(name = "Nomenklatura.findByIsGroup", query = "SELECT n FROM Nomenklatura n WHERE n.isGroup = :isGroup"),
     @NamedQuery(name = "Nomenklatura.findByUsluga", query = "SELECT n FROM Nomenklatura n WHERE n.usluga = :usluga"),
@@ -44,6 +46,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Nomenklatura.findByVersion", query = "SELECT n FROM Nomenklatura n WHERE n.version = :version"),
     @NamedQuery(name = "Nomenklatura.findByArtikul", query = "SELECT n FROM Nomenklatura n WHERE n.artikul = :artikul")})
 public class Nomenklatura implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nomId")
+    private Collection<LastPrices> lastPricesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mainUsluga")
     private Collection<UserSettings> userSettingsCollection;
     private static final long serialVersionUID = 1L;
@@ -229,6 +233,15 @@ public class Nomenklatura implements Serializable {
 
     public void setUserSettingsCollection(Collection<UserSettings> userSettingsCollection) {
         this.userSettingsCollection = userSettingsCollection;
+    }
+
+    @XmlTransient
+    public Collection<LastPrices> getLastPricesCollection() {
+        return lastPricesCollection;
+    }
+
+    public void setLastPricesCollection(Collection<LastPrices> lastPricesCollection) {
+        this.lastPricesCollection = lastPricesCollection;
     }
     
 }
