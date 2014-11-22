@@ -16,7 +16,7 @@
     <h:body>
         <pm:page id="list">
             <pm:header title="Divas CRM - Замеры" swatch="b">
-                <p:outputLabel styleClass="ui-btn-left ui-btn-inline" value="#{sessionScope.username}" />
+                <p:outputLabel styleClass="ui-btn-left ui-btn-inline" value="#{p:remoteUser()}" />
                 <p:commandButton styleClass="ui-btn-right ui-btn-inline" value="Logout" action="#{login.doLogout()}"/>
             </pm:header>
             <pm:content>
@@ -389,30 +389,35 @@
                                 </p:selectOneMenu>
                             </pm:field>
                             <pm:field>
-                                <p:outputLabel value="Price:" for="price" />
+                                <p:outputLabel value="Кол-во:" for="qtity" />
+                                <p:inputText id="qtity" value="#{ordersTpUslugiController.selected.quantity}" title="Кол-во" required="true" requiredMessage="The Quantity field is required."
+                                             type = "number"/>
+                            </pm:field>
+                            <pm:field>
+                                <p:outputLabel value="Цена:" for="price" />
                                 <p:inputText id="price" value="#{ordersTpUslugiController.selected.price}" title="Price" required="true" requiredMessage="The Price field is required."
                                              type = "number"/>
                             </pm:field>
                             <pm:field>
-                                <p:outputLabel value="Summ:" for="summ" />
+                                <p:outputLabel value="Сумма:" for="summ" />
                                 <p:inputText id="summ" value="#{ordersTpUslugiController.selected.summ}" title="Summ" required="true" requiredMessage="The Summ field is required."
                                              type = "number"/>
                             </pm:field>
                             <pm:field>
-                                <p:outputLabel value="DatComplete:" for="datComplete" />
-                                <p:calendar id="datComplete" value="#{ordersTpUslugiController.selected.datComplete}" 
+                                <p:outputLabel value="Дата окончания:" for="datComplete" />
+                                <p:calendar locale="ru" pattern="dd/MM/yyyy" navigator="true" id="datComplete" value="#{ordersTpUslugiController.selected.datComplete}" 
                                             title="DatComplete" required="true" requiredMessage="The DatComplete field is required.">
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </p:calendar>
                             </pm:field>
                             <pm:field>
-                                <p:outputLabel value="DatToPay:" for="datToPay" />
-                                <p:calendar id="datToPay" value="#{ordersTpUslugiController.selected.datToPay}" title="DatToPay">                                             
+                                <p:outputLabel value="Дата оплаты:" for="datToPay" />
+                                <p:calendar locale="ru" pattern="dd/MM/yyyy" id="datToPay" value="#{ordersTpUslugiController.selected.datToPay}" title="DatToPay">                                             
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
                                 </p:calendar>
                             </pm:field>
                             <pm:field rendered="false">
-                                <p:outputLabel value="OrderId:" for="orderId" />
+                                <p:outputLabel value="Заказ:" for="orderId" />
                                 <p:selectOneMenu id="orderId" value="#{ordersTpUslugiController.selected.orderId}" required="true" requiredMessage="The OrderId field is required.">
                                     <f:selectItem itemLabel="---" itemValue="" />
                                     <f:selectItems value="#{orders.itemsAvailableSelectOne}"
@@ -422,7 +427,7 @@
                             </pm:field>
                             
                             <pm:field>
-                                <p:outputLabel value="SotrId:" for="sotrId" />
+                                <p:outputLabel value="Замерщик:" for="sotrId" />
                                 <p:selectOneMenu id="sotrId" value="#{ordersTpUslugiController.selected.sotrId}" required="true" requiredMessage="The SotrId field is required.">
                                     <f:selectItem itemLabel="---" itemValue="" />
                                     <f:selectItems value="#{kontragents.itemsAvailableSelectOne}"

@@ -38,6 +38,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OrdersTpUslugi.findByDatComplete", query = "SELECT o FROM OrdersTpUslugi o WHERE o.datComplete = :datComplete"),
     @NamedQuery(name = "OrdersTpUslugi.findByDatToPay", query = "SELECT o FROM OrdersTpUslugi o WHERE o.datToPay = :datToPay")})
 public class OrdersTpUslugi implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "QUANTITY")
+    private BigDecimal quantity;
     @JoinColumn(name = "MEASURE_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private MeasureUnit measureId;
@@ -195,6 +199,14 @@ public class OrdersTpUslugi implements Serializable {
 
     public void setGroupId(Nomenklatura groupId) {
         this.groupId = groupId;
+    }
+
+    public BigDecimal getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(BigDecimal quantity) {
+        this.quantity = quantity;
     }
     
 }
