@@ -20,7 +20,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import ua.divas.mob.entity.Nomenklatura;
 import ua.divas.mob.entity.Orders;
+import ua.divas.mob.util.DataQuery;
 
 @ManagedBean(name = "ordersTpUslugiController")
 @SessionScoped
@@ -70,11 +72,12 @@ public class OrdersTpUslugiController implements Serializable {
         return selected;
     }
 
-    public void create() {
+    public String create() {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("OrdersTpUslugiCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
         }
+        return "pm:uslugiList?transition=flip";
     }
 
     public void update() {
@@ -135,6 +138,12 @@ public class OrdersTpUslugiController implements Serializable {
 
     public List<OrdersTpUslugi> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+
+    public List<Nomenklatura> getItemsNomAvailableSelectOne() {
+        DataQuery q = new DataQuery();
+        System.out.println("Master field " + getSelected().getGroupId());
+        return q.getParentForCascade(getSelected().getGroupId());
     }
 
     @FacesConverter(forClass = OrdersTpUslugi.class)

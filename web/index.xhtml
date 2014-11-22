@@ -350,88 +350,96 @@
             </pm:header>
             <pm:content>
                 <p:outputPanel>
-                    <f:view>
-                        <h:form id="newjobform">
+        
+                        <h:form id="newjobform" prependId="false">
+                            <p:growl id="msgnewjob" showDetail="false" />
                             <pm:field rendered="false">
                                 <p:outputLabel value="Id:" for="id" />
                                 <p:inputText id="id" value="#{ordersTpUslugiController.selected.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
                             </pm:field>
                             <pm:field>
                                 <p:outputLabel value="Вид:" for="groupId" />
-                                <p:selectOneMenu id="groupId" value="#{ordersTpUslugiController.selected.groupId}" tabindex="0" >
-                                    <f:selectItem itemLabel="---" itemValue="" />
+                                <p:selectOneMenu id="groupId" value="#{ordersTpUslugiController.selected.groupId}"
+                                                 tabindex="0" immediate="true" >
+                                    <f:selectItem itemLabel="---" itemValue="#{null}" />
                                     <f:selectItems value="#{nomenklaturaController.itemsGrpAvailableSelectOne}"
                                                    var="grpIdItem" itemLabel="#{grpIdItem.fullname}"
-                                                   itemValue="#{grpIdItem.id}"/>
-                                    
+                                                   itemValue="#{grpIdItem}"/>
+                                    <p:ajax update="nomIdfld"/>
                                 </p:selectOneMenu>
                             </pm:field>
-                            <pm:field>
+                            <pm:field id="nomIdfld">
                                 <p:outputLabel value="Работа:" for="nomId" />
                                 <p:selectOneMenu id="nomId" value="#{ordersTpUslugiController.selected.nomId}" 
                                                  required="true" requiredMessage="The NomId field is required." tabindex="1">
-                                    <f:selectItem itemLabel="---" itemValue="" />
-                                    <f:selectItems value="#{nomenklaturaController.itemsNomAvailableSelectOne}"
+                                    <f:selectItem itemLabel="---" itemValue="#{null}" />
+                                    <f:selectItems value="#{ordersTpUslugiController.itemsNomAvailableSelectOne}"
                                                    var="nomIdItem" itemLabel="#{nomIdItem.fullname}"
-                                                   itemValue="#{nomIdItem.id}"/>
+                                                   itemValue="#{nomIdItem}"/>
+                                    <p:ajax update="msrId"/>
                                 </p:selectOneMenu>
                             </pm:field>
-                            <pm:field>
+                            <pm:field id="msrId">
                                 <p:outputLabel value="Ед.Изм:" for="measureId" />
                                 <p:selectOneMenu id="measureId" value="#{ordersTpUslugiController.selected.measureId}" required="true" requiredMessage="The MeasureId field is required.">
                                     <f:selectItem itemLabel="---" itemValue="" />
                                     <f:selectItems value="#{measure.itemsAvailableSelectOne}"
                                                    var="msrIdItem" itemLabel="#{msrIdItem.fullname}"
-                                                   itemValue="#{msrIdItem.id}"/>
+                                                   itemValue="#{msrIdItem}"/>
                                 </p:selectOneMenu>
                             </pm:field>
                             <pm:field>
                                 <p:outputLabel value="Price:" for="price" />
-                                <p:inputText id="price" value="#{ordersTpUslugiController.selected.price}" title="Price" required="true" requiredMessage="The Price field is required."/>
+                                <p:inputText id="price" value="#{ordersTpUslugiController.selected.price}" title="Price" required="true" requiredMessage="The Price field is required."
+                                             type = "number"/>
                             </pm:field>
                             <pm:field>
                                 <p:outputLabel value="Summ:" for="summ" />
-                                <p:inputText id="summ" value="#{ordersTpUslugiController.selected.summ}" title="Summ" required="true" requiredMessage="The Summ field is required."/>
+                                <p:inputText id="summ" value="#{ordersTpUslugiController.selected.summ}" title="Summ" required="true" requiredMessage="The Summ field is required."
+                                             type = "number"/>
                             </pm:field>
                             <pm:field>
                                 <p:outputLabel value="DatComplete:" for="datComplete" />
-                                <p:inputText id="datComplete" value="#{ordersTpUslugiController.selected.datComplete}" title="DatComplete" required="true" requiredMessage="The DatComplete field is required.">
-                                    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                </p:inputText>
+                                <p:calendar id="datComplete" value="#{ordersTpUslugiController.selected.datComplete}" 
+                                            title="DatComplete" required="true" requiredMessage="The DatComplete field is required.">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:calendar>
                             </pm:field>
                             <pm:field>
                                 <p:outputLabel value="DatToPay:" for="datToPay" />
-                                <p:inputText id="datToPay" value="#{ordersTpUslugiController.selected.datToPay}" title="DatToPay" >
-                                    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                </p:inputText>
+                                <p:calendar id="datToPay" value="#{ordersTpUslugiController.selected.datToPay}" title="DatToPay">                                             
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:calendar>
                             </pm:field>
                             <pm:field rendered="false">
                                 <p:outputLabel value="OrderId:" for="orderId" />
                                 <p:selectOneMenu id="orderId" value="#{ordersTpUslugiController.selected.orderId}" required="true" requiredMessage="The OrderId field is required.">
-
+                                    <f:selectItem itemLabel="---" itemValue="" />
                                     <f:selectItems value="#{orders.itemsAvailableSelectOne}"
                                                    var="ordersIdItem" itemLabel="#{ordersIdItem.num}"
-                                                   itemValue="#{ordersIdItem.id}"/>
+                                                   itemValue="#{ordersIdItem}"/>
                                 </p:selectOneMenu>
                             </pm:field>
                             
                             <pm:field>
                                 <p:outputLabel value="SotrId:" for="sotrId" />
                                 <p:selectOneMenu id="sotrId" value="#{ordersTpUslugiController.selected.sotrId}" required="true" requiredMessage="The SotrId field is required.">
-                                    <!-- TODO: update below reference to list of available items-->
-                                    <f:selectItems value="#{fixme}"/>
+                                    <f:selectItem itemLabel="---" itemValue="" />
+                                    <f:selectItems value="#{kontragents.itemsAvailableSelectOne}"
+                                                   var="konIdItem" itemLabel="#{konIdItem.fullname}"
+                                                   itemValue="#{konIdItem}"/>
                                 </p:selectOneMenu>
                             </pm:field>
                             
                             
                             <p:panelGrid columns="2">
-                                <p:commandButton value="Сохранить" update=":listOplat:listOplForm"
+                                <p:commandButton value="Сохранить" update=":listOplat:listOplForm,msgnewjob" action="#{ordersTpUslugiController.create()}"
                                                  oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
 
                                 <p:button value="Отменить" outcome="pm:uslugiList?transition=flip" icon="ui-icon-check"/>
                             </p:panelGrid>
                         </h:form>
-                    </f:view>
+                
                 </p:outputPanel>               
             </pm:content>
         </pm:page>

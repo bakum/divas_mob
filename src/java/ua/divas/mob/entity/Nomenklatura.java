@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Nomenklatura.findByVersion", query = "SELECT n FROM Nomenklatura n WHERE n.version = :version"),
     @NamedQuery(name = "Nomenklatura.findByArtikul", query = "SELECT n FROM Nomenklatura n WHERE n.artikul = :artikul")})
 public class Nomenklatura implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nomId")
     private Collection<LastPrices> lastPricesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "mainUsluga")
@@ -93,6 +94,8 @@ public class Nomenklatura implements Serializable {
     private Nomenklatura parentId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nomId")
     private Collection<OrdersTpUslugi> ordersTpUslugiCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId")
+    private Collection<OrdersTpUslugi> ordersTpUslugiCollectionGrp;
 
     public Nomenklatura() {
     }
@@ -201,6 +204,15 @@ public class Nomenklatura implements Serializable {
         this.ordersTpUslugiCollection = ordersTpUslugiCollection;
     }
 
+    @XmlTransient
+    public Collection<OrdersTpUslugi> getOrdersTpUslugiCollectionGrp() {
+        return ordersTpUslugiCollectionGrp;
+    }
+
+    public void setOrdersTpUslugiCollectionGrp(Collection<OrdersTpUslugi> ordersTpUslugiCollectionGrp) {
+        this.ordersTpUslugiCollectionGrp = ordersTpUslugiCollectionGrp;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -243,5 +255,5 @@ public class Nomenklatura implements Serializable {
     public void setLastPricesCollection(Collection<LastPrices> lastPricesCollection) {
         this.lastPricesCollection = lastPricesCollection;
     }
-    
+
 }

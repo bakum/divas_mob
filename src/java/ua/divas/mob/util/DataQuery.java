@@ -5,6 +5,7 @@
  */
 package ua.divas.mob.util;
 
+import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -78,6 +79,21 @@ public class DataQuery {
         }    
         
     }
+     
+    public List<Nomenklatura> getParentForCascade(Nomenklatura parent){
+        try {
+            List<Nomenklatura> u = em.createNamedQuery("Nomenklatura.findByParentGr", Nomenklatura.class)
+                    .setParameter("parentid", parent)
+                    .getResultList();
+            if (u != null) {
+                return u;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }    
+        
+    } 
     
     public UserSettings getCurrentUserSettings (Users userid) {
         try {

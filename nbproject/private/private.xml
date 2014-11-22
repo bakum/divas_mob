@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="4">
-        <file>
-            <url>web/index.xhtml</url>
-            <bookmark id="3">
-                <name/>
-                <line>245</line>
-                <key/>
-            </bookmark>
-            <bookmark id="4">
-                <name/>
-                <line>411</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/MeasureController.java</file>
-            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/NomenklaturaController.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/entity/Kontragents.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/session/AbstractFacade.java</file>
             <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/OrdersController.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/session/OrdersTpOplatyFacade.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/session/OrdersTpUslugiFacade.java</file>
             <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/OrdersTpOplatyController.java</file>
             <file>file:/home/bakum/NetBeansProjects/divas_mob/web/index.xhtml</file>
-            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/session/NomenklaturaFacade.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/entity/OrdersTpUslugi.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/OrdersTpUslugiController.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/entity/Nomenklatura.java</file>
         </group>
     </open-files>
 </project-private>

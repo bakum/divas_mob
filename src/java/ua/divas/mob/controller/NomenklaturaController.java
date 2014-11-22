@@ -18,6 +18,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.AjaxBehaviorEvent;
 import ua.divas.mob.entity.OrdersTpUslugi;
 
 @ManagedBean(name = "nomenklaturaController")
@@ -119,7 +120,7 @@ public class NomenklaturaController implements Serializable {
         }
     }
     
-    public void handleGroupIdChange() {
+    public void handleGroupIdChange(AjaxBehaviorEvent e) {
         System.out.println("listener");
       
    }
