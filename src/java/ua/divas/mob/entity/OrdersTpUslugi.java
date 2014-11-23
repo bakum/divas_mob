@@ -64,8 +64,6 @@ public class OrdersTpUslugi implements Serializable {
     @NotNull
     @Column(name = "SUMM")
     private BigDecimal summ;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "DAT_COMPLETE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datComplete;

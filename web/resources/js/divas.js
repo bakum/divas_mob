@@ -41,23 +41,6 @@ function handleViewChange(viewName) {
 function setupMap(mapZoom, showOverviewControl) {
     var coord = document.getElementById("map:mapForm:coordstr").value;
     console.log(coord);
-
-//    $('#gmap').gmap3({
-//        map: {
-//            options: {
-//                maxZoom: mapZoom
-//            }
-//        },
-//        marker: {
-//            address: coord,
-//            options: {
-//                icon: new google.maps.MarkerImage(
-//                        new google.maps.Size(32, 37, "px", "px")
-//                        )
-//            }
-//        }
-//    },
-//    "autofit");
     var re = /\s*,\s*/,
             mapCoord = coord.split(re);
     if (!mapCoord)
@@ -83,9 +66,8 @@ function setupMap(mapZoom, showOverviewControl) {
         map: map,
         title: "Это здесь!"
     });
-    marker.setMap(map);
     map.setCenter(mapLatlng);
-    enableHighAccuracy: true;
+    marker.setMap(map);
     google.maps.event.trigger(map, 'resize');
 }
 

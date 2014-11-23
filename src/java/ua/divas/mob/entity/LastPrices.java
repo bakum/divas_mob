@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "LastPrices.findAll", query = "SELECT l FROM LastPrices l"),
+    @NamedQuery(name = "LastPrices.findByNom", query = "SELECT l FROM LastPrices l WHERE l.nomId = :nomid"),
     @NamedQuery(name = "LastPrices.findById", query = "SELECT l FROM LastPrices l WHERE l.id = :id"),
     @NamedQuery(name = "LastPrices.findByPeriod", query = "SELECT l FROM LastPrices l WHERE l.period = :period"),
     @NamedQuery(name = "LastPrices.findByPriceUsl", query = "SELECT l FROM LastPrices l WHERE l.priceUsl = :priceUsl"),

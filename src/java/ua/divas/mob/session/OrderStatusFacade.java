@@ -5,6 +5,7 @@
  */
 package ua.divas.mob.session;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,5 +28,13 @@ public class OrderStatusFacade extends AbstractFacade<OrderStatus> {
     public OrderStatusFacade() {
         super(OrderStatus.class);
     }
+    
+    @Override
+     public List<OrderStatus> findAll() {
+         return getEntityManager().createNamedQuery("OrderStatus.findByNameForZamer", OrderStatus.class)
+                    .setParameter("name1", "ЗАМЕР")
+                    .setParameter("name2", "НЕОПЛАЧЕН")
+                    .getResultList();
+     }
     
 }

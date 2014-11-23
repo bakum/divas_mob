@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import ua.divas.mob.entity.Kontragents;
+import ua.divas.mob.entity.LastPrices;
 import ua.divas.mob.entity.Nomenklatura;
 import ua.divas.mob.entity.OrderStatus;
 import ua.divas.mob.entity.UserSettings;
@@ -43,6 +44,20 @@ public class DataQuery {
         } catch (Exception e) {
             return null;
         }       
+    }
+    
+    public LastPrices getLastPrices (Nomenklatura n) {
+        try {
+            LastPrices u = em.createNamedQuery("LastPrices.findByNom", LastPrices.class)
+                    .setParameter("nomid", n)
+                    .getSingleResult();
+            if (u != null) {
+                return u;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }      
     }
     
     public String getSessionScopeAttr(String key){

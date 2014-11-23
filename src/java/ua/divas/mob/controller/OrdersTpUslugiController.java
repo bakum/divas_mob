@@ -6,6 +6,7 @@ import ua.divas.mob.util.JsfUtil.PersistAction;
 import ua.divas.mob.session.OrdersTpUslugiFacade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -20,6 +21,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.AjaxBehaviorEvent;
+import ua.divas.mob.entity.Kontragents;
+import ua.divas.mob.entity.LastPrices;
 import ua.divas.mob.entity.Nomenklatura;
 import ua.divas.mob.entity.Orders;
 import ua.divas.mob.util.DataQuery;
@@ -33,8 +37,43 @@ public class OrdersTpUslugiController implements Serializable {
     private List<OrdersTpUslugi> items = null;
     private OrdersTpUslugi selected;
     private Orders master;
+    private boolean editable;
 
     public OrdersTpUslugiController() {
+    }
+
+    public boolean getEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public void nomenklaturaChanged(AjaxBehaviorEvent e) {
+        //System.out.println("listener");
+        DataQuery q = new DataQuery();
+        LastPrices lp = q.getLastPrices(getSelected().getNomId());
+        if (lp != null) {
+            getSelected().setMeasureId(lp.getEdIzm());
+            getSelected().setPrice(lp.getPriceGoods().add(lp.getPriceUsl()).multiply(new BigDecimal(1.2)));
+        } else {
+            getSelected().setMeasureId(null);
+            getSelected().setPrice(null);
+        }
+
+        getSelected().setQuantity(null);
+        getSelected().setSumm(null);
+    }
+
+    public void quantityChanged(AjaxBehaviorEvent e) {
+        BigDecimal pr = getSelected().getPrice();
+        BigDecimal qt = getSelected().getQuantity();
+        if (qt != null || pr != null) {
+            getSelected().setSumm(pr.multiply(qt));
+        } else {
+            getSelected().setSumm(null);
+        }
     }
 
     public Orders getMaster() {
@@ -55,11 +94,19 @@ public class OrdersTpUslugiController implements Serializable {
 
     protected void setEmbeddableKeys() {
     }
+    
+    protected Kontragents getCurrentZamer(){
+        DataQuery q = new DataQuery();
+        return q.getCurrenZamer(q.getSessionScopeAttr("username"));
+    }
 
     protected void initializeEmbeddableKey() {
         selected.setId(UUID.randomUUID().toString());
         selected.setOrderId(master);
         selected.setDatToPay(new Date());
+        selected.setDatComplete(new Date());
+        selected.setSotrId(getCurrentZamer());
+        
     }
 
     private OrdersTpUslugiFacade getFacade() {
@@ -76,12 +123,18 @@ public class OrdersTpUslugiController implements Serializable {
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("OrdersTpUslugiCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
+            return "pm:uslugiList?transition=flip";
         }
-        return "pm:uslugiList?transition=flip";
+        selected = null;
+        return null;
     }
 
-    public void update() {
+    public String update() {
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("OrdersTpUslugiUpdated"));
+        if (!JsfUtil.isValidationFailed()) {
+            return "pm:uslugiList?transition=flip";
+        }
+        return null;
     }
 
     public void destroy() {
@@ -116,6 +169,7 @@ public class OrdersTpUslugiController implements Serializable {
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";
+                selected = null;
                 Throwable cause = ex.getCause();
                 if (cause != null) {
                     msg = cause.getLocalizedMessage();
@@ -126,6 +180,7 @@ public class OrdersTpUslugiController implements Serializable {
                     JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
                 }
             } catch (Exception ex) {
+                selected = null;
                 Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
                 JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             }

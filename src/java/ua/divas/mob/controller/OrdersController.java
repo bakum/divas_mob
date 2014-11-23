@@ -36,10 +36,11 @@ public class OrdersController implements Serializable {
     
     public String refresh() {
         if (items != null) {
-            items = null;
+            items = null;            
         }
-        //this.getItems();
-        return "pm:list";
+        selected = null;
+        //return "pm:list";
+        return null;
     }
 
     public boolean haveOplaty() {
@@ -88,7 +89,7 @@ public class OrdersController implements Serializable {
                 sum = sum + next.getSumm().floatValue();
             }
             r = String.valueOf(sum);
-            return "Итого на сумму: "+r+" грн";
+            return "Работы: "+r+" грн";
 
         } else {
             return "Работы не определены";
