@@ -72,7 +72,7 @@ function setupMap(mapZoom, showOverviewControl) {
 }
 
 function initializeMap() {
-    setupMap(15, true);
+    setupMap(16, true);
 }
 
 function resetMap() {
@@ -82,20 +82,7 @@ function resetMap() {
 function refreshMap() {
     if (map != null) {
         google.maps.event.trigger(map, 'resize');
-        //$('map:mapForm:gmap').gmap3('refresh');
     }
-}
-
-function refreshPage() {
-  $.mobile.changePage(
-    window.location.href,
-    {
-      allowSamePageTransition : true,
-      transition              : 'none',
-      showLoadMsg             : false,
-      reloadPage              : true
-    }
-  );
 }
 
 

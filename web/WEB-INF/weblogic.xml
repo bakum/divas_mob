@@ -14,4 +14,12 @@
         <role-name>administrator</role-name>
         <principal-name>administrator</principal-name>
     </security-role-assignment>
+    <security-role-assignment>
+        <role-name>z_manager</role-name>
+        <principal-name>z_manager</principal-name>
+    </security-role-assignment>
+    <security-role-assignment>
+        <role-name>z_dispatcher</role-name>
+        <principal-name>z_dispatcher</principal-name>
+    </security-role-assignment>
 </weblogic-web-app>

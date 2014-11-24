@@ -16,18 +16,21 @@
     <h:body>
         <pm:page id="list">
             <pm:header title="Divas CRM - Замеры" swatch="b">
-                <p:outputLabel styleClass="ui-btn-left ui-btn-inline" value="#{p:remoteUser()}" />
-                <p:commandButton styleClass="ui-btn-right ui-btn-inline" value="Logout" action="#{login.doLogout()}"/>
+                <p:outputLabel styleClass="ui-btn-left ui-icon-user ui-btn-inline" value="#{p:remoteUser()}" />
+                <p:commandButton styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-power" value="Logout" action="#{login.doLogout()}"/>
             </pm:header>
             <pm:content>
                 <h:form id="listForm">
                     <p:growl id="msgs" showDetail="true" />
                     <p:dataList var="item" value="#{orders.items}">
                         <f:facet name="header">
-                            <p:commandButton immediate="true" value="Обновить замеры" action="#{orders.refresh()}"
-                                             update=":list:listForm,:listOplat:listOplForm:datalist" ajax="false">
+                            <p:panelGrid columns="2">
+                                <p:button rendered="#{p:ifGranted('administrator')}" value="Главная" outcome="home" icon="ui-icon-home"/>
+                                <p:commandButton immediate="true" icon="ui-icon-refresh" value="Обновить" action="#{orders.refresh()}"
+                                                 update=":list:listForm,:listOplat:listOplForm:datalist" ajax="false">
 
-                            </p:commandButton>
+                                </p:commandButton>
+                            </p:panelGrid>
                         </f:facet>                        
                         <p:commandLink update =":viewTask:editForm:editFormPanel, :listOplat:listOplForm:datalist, :uslugiList:listUslForm:listusl" action="pm:viewTask">
                             <p:outputLabel style="font-weight: bold;" value="#{item.kontragId.fullname}"/>
@@ -49,21 +52,31 @@
 
         <pm:page id="viewTask" lazy="true">
             <pm:header title="Детали замера">
-                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-arrow-l" outcome="pm:list?transition=flip"/>                
+
             </pm:header>
             <pm:content>
                 <h:form id="editForm" rendered="#{orders.selected != null}">
+                    <p:toolbar>
+                        <f:facet name="left">
+                            <p:button outcome="pm:list?transition=flip" 
+                                      value="Назад" icon="ui-icon-back" />
+                            <p:commandButton id="SaveBtnId" action="#{orders.update()}" update=":list:listForm" disabled="#{!orders.zamerChanged}"
+                                             value="Сохранить заказ" icon="ui-icon-check" oncomplete="pm:list?transition=flip"/> 
+                        </f:facet>
+                        <f:facet name="right">
+                            <p:button value="Перечень работ" icon="ui-icon-bullets" outcome="pm:uslugiList"/>
+                            <p:button value="Оплаты" icon="ui-icon-bullets" outcome="pm:listOplat"/>  
+                        </f:facet>                    
+                    </p:toolbar>  
                     <p:outputPanel id="editFormPanel" >
-                        <p:commandButton id="SaveBtnId" action="#{orders.update()}" update=":list:listForm" disabled="#{!orders.zamerChanged}"
-                                         value="Сохранить заказ" icon="ui-icon-check" oncomplete="pm:list?transition=flip"/>    
                         <p:panelGrid columns="2">
                             <pm:field>
-                                <p:outputLabel rendered="#{!orders.haveOplaty()}" style="color: red" id="statusop" value="#{orders.oplatyStatus()}" />
-                                <p:outputLabel rendered="#{orders.haveOplaty()}" style="color: blue" id="statusopl" value="#{orders.oplatyStatus()}" />
+                                <p:outputLabel rendered="#{!orders.haveOplaty()}" style="color: red;font-size: 0.75em" id="statusop" value="#{orders.oplatyStatus()}" />
+                                <p:outputLabel rendered="#{orders.haveOplaty()}" style="color: blue;font-size: 0.75em" id="statusopl" value="#{orders.oplatyStatus()}" />
                             </pm:field>
                             <pm:field>
-                                <p:outputLabel rendered="#{!orders.haveZamer()}" style="color: red" id="statusza" value="#{orders.zamerStatus()}" />
-                                <p:outputLabel rendered="#{orders.haveZamer()}" style="color: blue" id="statuszam" value="#{orders.zamerStatus()}" />
+                                <p:outputLabel rendered="#{!orders.haveZamer()}" style="color: red;font-size: 0.75em" id="statusza" value="#{orders.zamerStatus()}" />
+                                <p:outputLabel rendered="#{orders.haveZamer()}" style="color: blue;font-size: 0.75em" id="statuszam" value="#{orders.zamerStatus()}" />
                             </pm:field>
                         </p:panelGrid>
                         <pm:field>
@@ -111,9 +124,7 @@
 
                     </p:outputPanel>
 
-                </h:form>
-                <p:button value="Перечень работ" icon="ui-icon-check" outcome="pm:uslugiList"/>
-                <p:button value="Оплаты" icon="ui-icon-check" outcome="pm:listOplat"/>
+                </h:form>                              
             </pm:content>
             <pm:footer>
                 <p:outputLabel style="text-align: center" value="BMExpert - 2014"></p:outputLabel>
@@ -122,8 +133,8 @@
 
         <pm:page id="viewContact" lazy="true">
             <pm:header title="Контакт">
-                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-arrow-l" outcome="pm:viewTask?transition=flip"/>
-                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-arrow-r" outcome="pm:list?transition=flip"/>
+                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-back" outcome="pm:viewTask?transition=flip"/>
+                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-home" outcome="pm:list?transition=flip"/>
             </pm:header>
             <pm:content>
                 <h:form id="editconForm">
@@ -150,7 +161,7 @@
                         <p:button value="Отменить" outcome="pm:viewTask?transition=flip" icon="ui-icon-check"/>
 
                     </p:panelGrid>
-                    <p:commandButton update=":map:mapForm:coordstr" value="Найти" onclick="handleViewChange('map')" action="pm:map?transition=flip" icon="ui-icon-check">
+                    <p:commandButton update=":map:mapForm:coordstr" value="Найти" onclick="handleViewChange('map')" action="pm:map?transition=flip" icon="ui-icon-location">
 
                     </p:commandButton>                    
                 </h:form>
@@ -159,27 +170,26 @@
 
         <pm:page id="map">            
             <pm:header title="Карта">
-                <p:button onclick="resetMap()" styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-arrow-l" outcome="pm:viewContact?transition=flip"/>
-                <p:button onclick="resetMap()" styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-arrow-r" outcome="pm:list?transition=flip"/>
+                <p:button onclick="resetMap()" styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-back" outcome="pm:viewContact?transition=flip"/>
+                <p:button onclick="resetMap()" styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-home" outcome="pm:list?transition=flip"/>
             </pm:header>
             <pm:content>
 
                 <h:form id="mapForm">
+                    <p:commandButton styleClass="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-refresh" value="Обновить" onclick="refreshMap()"/>
                     <h:inputHidden id="coordstr" value="#{contactDetailsController.selectedAdressCoordinates}"/>
 
-                    <p:gmap id="gmap" center="0,0" zoom="15" type="ROADMAP"   
+                    <p:gmap id="gmap" center="0,0" zoom="16" type="ROADMAP"   
                             style="width:100%;height:400px" /> 
+
                 </h:form>
             </pm:content> 
-            <pm:footer>
-                <p:button value="Обновить" onclick="refreshMap()"/>
-            </pm:footer>
         </pm:page>
 
         <pm:page id="listOplat">
             <pm:header title="Оплаты">
-                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-arrow-l" outcome="pm:viewTask?transition=flip"/>
-                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-arrow-r" outcome="pm:list?transition=flip"/>
+                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-back" outcome="pm:viewTask?transition=flip"/>
+                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-home" outcome="pm:list?transition=flip"/>
             </pm:header>
             <pm:content>
                 <p:outputPanel>
@@ -219,12 +229,16 @@
 
         <pm:page id="viewOplata" lazy="true">
             <pm:header title="Новая оплата">
-                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-arrow-l" outcome="pm:listOplat?transition=flip"/>
-                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-arrow-r" outcome="pm:list?transition=flip"/>
+                
             </pm:header>
             <pm:content>
                 <h:form id="viewOplForm" rendered="#{ordersTpOplatyController.selected != null}">
                     <p:growl id="msgsopl" showDetail="true" />
+                    <p:panelGrid columns="2">
+                        <p:commandButton value="Сохранить" update=":listOplat:listOplForm,msgsopl" action="#{ordersTpOplatyController.create()}"
+                                         oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
+                        <p:button value="Отменить" outcome="pm:listOplat?transition=flip" icon="ui-icon-recycle"/>
+                    </p:panelGrid>
                     <pm:field> 
                         <p:outputLabel style="text-align: center; font-weight: bold;" value="#{ordersTpOplatyController.master.kontragId.fullname}"/>
 
@@ -239,7 +253,7 @@
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="datopl" value="Дата:" />                        
-                        <p:calendar required="true" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
+                        <p:calendar locale="ru" pattern="dd/MM/yyyy HH:mm:ss" required="true" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
                             <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                         </p:calendar>
                     </pm:field>
@@ -251,29 +265,30 @@
                         <p:outputLabel for="useropl" value="Оплату принял:" />
                         <p:selectOneMenu id="useropl" value="#{ordersTpOplatyController.selected.userId}"
                                          required="true" 
-                                         requiredMessage="Пользователь обязателен для заполнения!" disabled="true">
+                                         requiredMessage="Пользователь обязателен для заполнения!" disabled="#{!p:ifGranted('administrator')}">
                             <f:selectItems value="#{usersController.itemsAvailableSelectOne}"
                                            var="userIdItem" itemLabel="#{userIdItem}"
                                            itemValue="#{userIdItem}"/>
                         </p:selectOneMenu>
                     </pm:field>
-                    <p:panelGrid columns="2">
-                        <p:commandButton value="Сохранить" update=":listOplat:listOplForm,msgsopl" action="#{ordersTpOplatyController.create()}"
-                                         oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
-                        <p:button value="Отменить" outcome="pm:listOplat?transition=flip" icon="ui-icon-check"/>
-                    </p:panelGrid>
+                    
                 </h:form>
             </pm:content>
         </pm:page>
 
         <pm:page id="editOplata" lazy="true">
             <pm:header title="Текущая оплата">
-                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-arrow-l" outcome="pm:listOplat?transition=flip"/>
-                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-arrow-r" outcome="pm:list?transition=flip"/>
+                
             </pm:header>
             <pm:content>
                 <h:form id="editOplForm" rendered="#{ordersTpOplatyController.selected != null}">
                     <p:growl id="msgsopl" showDetail="true" />
+                    <p:panelGrid columns="2">
+                        <p:commandButton value="Сохранить" update=":listOplat:listOplForm,msgsopl" action="#{ordersTpOplatyController.update()}"
+                                         oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
+
+                        <p:button value="Отменить" outcome="pm:listOplat?transition=flip" icon="ui-icon-recycle"/>
+                    </p:panelGrid>
                     <pm:field> 
                         <p:outputLabel style="text-align: center; font-weight: bold;" value="#{ordersTpOplatyController.master.kontragId.fullname}"/>
                     </pm:field> 
@@ -287,7 +302,7 @@
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="datopl" value="Дата:" />                        
-                        <p:calendar id="datopl" value="#{ordersTpOplatyController.selected.dat}">
+                        <p:calendar locale="ru" pattern="dd/MM/yyyy HH:mm:ss" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
                             <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                         </p:calendar>
                     </pm:field>
@@ -299,26 +314,20 @@
                         <p:outputLabel for="useropl" value="Оплату принял:" />
                         <p:selectOneMenu id="useropl" value="#{ordersTpOplatyController.selected.userId}"
                                          required="true"
-                                         requiredMessage="Пользователь обязателен для заполнения!" disabled="true">
+                                         requiredMessage="Пользователь обязателен для заполнения!" disabled="#{!p:ifGranted('administrator')}">
                             <f:selectItems value="#{usersController.itemsAvailableSelectOne}"
                                            var="userIdItem" itemLabel="#{userIdItem}"
                                            itemValue="#{userIdItem}"/>
                         </p:selectOneMenu>
-                    </pm:field>
-                    <p:panelGrid columns="2">
-                        <p:commandButton value="Сохранить" update=":listOplat:listOplForm,msgsopl" action="#{ordersTpOplatyController.update()}"
-                                         oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
-
-                        <p:button value="Отменить" outcome="pm:listOplat?transition=flip" icon="ui-icon-check"/>
-                    </p:panelGrid>
+                    </pm:field>                    
                 </h:form>
             </pm:content>
         </pm:page>
 
         <pm:page id="uslugiList" lazy="true">
             <pm:header title="Работы">
-                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-arrow-l" outcome="pm:viewTask?transition=flip"/>
-                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-arrow-r" outcome="pm:list?transition=flip"/>
+                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-back" outcome="pm:viewTask?transition=flip"/>
+                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-home" outcome="pm:list?transition=flip"/>
             </pm:header>
             <pm:content>
                 <p:outputPanel>
@@ -358,15 +367,26 @@
 
         <pm:page id="newjob" lazy="true">
             <pm:header title="Новая работа">
-                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-arrow-l" outcome="pm:uslugiList?transition=flip"/>
-                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-arrow-r" outcome="pm:list?transition=flip"/>
+                
             </pm:header>
             <pm:content>
                 <p:outputPanel>
 
                     <h:form id="newjobform" prependId="false">
-                        <p:growl id="msgnewjob" showDetail="false" />
+                        <p:panelGrid columns="2">
+                            <p:commandButton rendered="#{ordersTpUslugiController.editable}" value="Сохранить" update=":listOplat:listOplForm,msgnewjob" action="#{ordersTpUslugiController.create()}"
+                                             oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
+                            <p:commandButton rendered="#{!ordersTpUslugiController.editable}" value="Сохранить" update=":listOplat:listOplForm,msgnewjob" action="#{ordersTpUslugiController.update()}"
+                                             oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
 
+                            <p:button value="Отменить" outcome="pm:uslugiList?transition=flip" icon="ui-icon-recycle"/>
+                        </p:panelGrid>
+                        <p:growl id="msgnewjob" showDetail="false" />
+                        <pm:field> 
+                            <p:outputLabel style="text-align: center; font-weight: bold; font-size: 0.85em;" 
+                                           value="#{ordersTpUslugiController.master.kontragId.fullname}"/>
+
+                        </pm:field>  
                         <pm:field rendered="false">
                             <p:outputLabel value="Id:" for="id" />
                             <p:inputText id="id" value="#{ordersTpUslugiController.selected.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
@@ -407,7 +427,7 @@
                             <pm:field id="msrId">
 
                                 <p:selectOneMenu id="measureId" value="#{ordersTpUslugiController.selected.measureId}" required="true" requiredMessage="The MeasureId field is required."
-                                                 disabled="true">
+                                                 disabled="#{!p:ifGranted('administrator')}">
                                     <f:selectItem itemLabel="---" itemValue="" />
                                     <f:selectItems value="#{measure.itemsAvailableSelectOne}"
                                                    var="msrIdItem" itemLabel="#{msrIdItem.fullname}"
@@ -418,12 +438,12 @@
                             <pm:field id="priceId">
 
                                 <p:inputText id="price" value="#{ordersTpUslugiController.selected.price}" title="Price" required="true" requiredMessage="The Price field is required."
-                                             type = "number" disabled="true" style="margin: 5px" placeholder="Цена"/>
+                                             type = "number" disabled="#{!p:ifGranted('administrator')}" style="margin: 5px" placeholder="Цена"/>
                             </pm:field>
                             <pm:field id="summId">
 
                                 <p:inputText id="summ" value="#{ordersTpUslugiController.selected.summ}" title="Summ" required="true" requiredMessage="The Summ field is required."
-                                             type = "number" disabled="true" style="margin: 5px" placeholder="Сумма"/>
+                                             type = "number" disabled="#{!p:ifGranted('administrator')}" style="margin: 5px" placeholder="Сумма"/>
                             </pm:field>
                             <pm:field rendered="false">
                                 <p:outputLabel value="Дата окончания:" for="datComplete" />
@@ -450,24 +470,14 @@
                         </p:panelGrid>
                         <pm:field>
                             <p:outputLabel value="Замерщик:" for="sotrId" />
-                            <p:selectOneMenu id="sotrId" value="#{ordersTpUslugiController.selected.sotrId}" disabled="true"
-                                      required="true" requiredMessage="The SotrId field is required.">
+                            <p:selectOneMenu id="sotrId" value="#{ordersTpUslugiController.selected.sotrId}" disabled="#{!p:ifGranted('administrator')}"
+                                             required="true" requiredMessage="The SotrId field is required.">
                                 <f:selectItem itemLabel="---" itemValue="" />
                                 <f:selectItems value="#{kontragents.itemsAvailableSelectOne}"
                                                var="konIdItem" itemLabel="#{konIdItem.fullname}"
                                                itemValue="#{konIdItem}"/>
                             </p:selectOneMenu>
                         </pm:field>
-
-
-                        <p:panelGrid columns="2">
-                            <p:commandButton rendered="#{ordersTpUslugiController.editable}" value="Сохранить" update=":listOplat:listOplForm,msgnewjob" action="#{ordersTpUslugiController.create()}"
-                                             oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
-                            <p:commandButton rendered="#{!ordersTpUslugiController.editable}" value="Сохранить" update=":listOplat:listOplForm,msgnewjob" action="#{ordersTpUslugiController.update()}"
-                                             oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
-
-                            <p:button value="Отменить" outcome="pm:uslugiList?transition=flip" icon="ui-icon-check"/>
-                        </p:panelGrid>
                     </h:form>
 
                 </p:outputPanel>               

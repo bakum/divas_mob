@@ -19,7 +19,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>faces/home.xhtml</welcome-file>
     </welcome-file-list>
     <security-constraint>
         <display-name>ZamerArea</display-name>
@@ -31,6 +31,25 @@
         <auth-constraint>
             <description/>
             <role-name>administrator</role-name>
+            <role-name>z_manager</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>AllArea</display-name>
+        <web-resource-collection>
+            <web-resource-name>All</web-resource-name>
+            <description/>
+            <url-pattern>/faces/home.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>administrator</role-name>
+            <role-name>z_manager</role-name>
+            <role-name>z_dispatcher</role-name>
         </auth-constraint>
         <user-data-constraint>
             <description/>
@@ -48,5 +67,13 @@
     <security-role>
         <description/>
         <role-name>administrator</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>z_manager</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>z_dispatcher</role-name>
     </security-role>
 </web-app>

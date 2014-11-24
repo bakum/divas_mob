@@ -70,10 +70,16 @@ public class LoginController implements Serializable{
             sessionScope.put(this.USERNAMETOKEN, un);
             //sessionScope.put(this.PASSWORDTOKEN, new String(pw));
             
-            boolean admin = WLS_Utility.isMember("administrator", un, true);
+            if (WLS_Utility.isMember("administrator", un, true)) {
+                return "home.xhtml?faces-redirect=true";
+            } else if (WLS_Utility.isMember("z_manager", un, true)) {
+                return "index.xhtml?faces-redirect=true";
+            } else {
+                return "index.xhtml?faces-redirect=true";
+            }
             //System.out.println("Administrator: "+admin);
             
-            return "index.xhtml?faces-redirect=true";
+            
             
         } catch(FailedLoginException fle) {
             RequestContext.getCurrentInstance().update("growl");
