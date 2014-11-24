@@ -19,10 +19,10 @@
             </pm:header>
             <pm:content>
                 <h:form>
-                    <p:menu >
+                    <p:menu styleClass="ui-listview-inset ui-corner-all ui-group-theme-a">
                         <p:submenu label="Замеры">
                             <p:menuitem rendered="#{p:ifAnyGranted('administrator,z_manager')}" value="Замерщик" outcome="index" icon="ui-icon-gear"/>
-                            <p:menuitem rendered="#{p:ifAnyGranted('administrator,z_dispatcher')}" value="Диспетчер" icon="ui-icon-gear"/>
+                            <p:menuitem rendered="#{p:ifAnyGranted('administrator,z_dispatcher')}" value="Диспетчер" outcome="dispatch" icon="ui-icon-gear"/>
                         </p:submenu>
                         <p:submenu label="Администратор" rendered="#{p:ifGranted('administrator')}">
                             <p:menuitem value="Google" url="http://www.google.com" icon="ui-icon-info"/>

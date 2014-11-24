@@ -75,7 +75,7 @@ public class LoginController implements Serializable{
             } else if (WLS_Utility.isMember("z_manager", un, true)) {
                 return "index.xhtml?faces-redirect=true";
             } else {
-                return "index.xhtml?faces-redirect=true";
+                return "dispatch.xhtml?faces-redirect=true";
             }
             //System.out.println("Administrator: "+admin);
             
@@ -85,7 +85,7 @@ public class LoginController implements Serializable{
             RequestContext.getCurrentInstance().update("growl");
             FacesMessage msg =
                 new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect Username or Password",
-                                 "Определено неверное имя пользователя" + " или пароль");
+                                 "Определено неверное имя пользователя или пароль");
             ctx.addMessage("aut", msg);
             return "";
             

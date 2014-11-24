@@ -52,14 +52,14 @@
 
         <pm:page id="viewTask" lazy="true">
             <pm:header title="Детали замера">
-
+                <p:button styleClass="ui-btn-left ui-btn-inline" outcome="pm:list?transition=flip" 
+                          value="Назад" icon="ui-icon-back" />
             </pm:header>
             <pm:content>
                 <h:form id="editForm" rendered="#{orders.selected != null}">
                     <p:toolbar>
                         <f:facet name="left">
-                            <p:button outcome="pm:list?transition=flip" 
-                                      value="Назад" icon="ui-icon-back" />
+
                             <p:commandButton id="SaveBtnId" action="#{orders.update()}" update=":list:listForm" disabled="#{!orders.zamerChanged}"
                                              value="Сохранить заказ" icon="ui-icon-check" oncomplete="pm:list?transition=flip"/> 
                         </f:facet>
@@ -133,12 +133,21 @@
 
         <pm:page id="viewContact" lazy="true">
             <pm:header title="Контакт">
-                <p:button styleClass="ui-btn-left ui-btn-inline" value="Назад" icon="ui-icon-back" outcome="pm:viewTask?transition=flip"/>
-                <p:button styleClass="ui-btn-right ui-btn-inline" value="Домой" icon="ui-icon-home" outcome="pm:list?transition=flip"/>
+
             </pm:header>
             <pm:content>
                 <h:form id="editconForm">
                     <p:growl id="savecontmsg" showDetail="true" />
+                    <p:panelGrid columns="3">
+                        <p:commandButton value="Сохранить" update=":viewTask:editForm:editFormPanel" action="#{contactDetailsController.update()}"
+                                         icon="ui-icon-check"/>
+                        <p:button value="Отменить" outcome="pm:viewTask?transition=flip" icon="ui-icon-recycle"/>
+                        <p:commandButton update=":map:mapForm:coordstr" value="Найти"
+                                         onclick="handleViewChange('map')" 
+                                         action="pm:map?transition=flip" 
+                                         icon="ui-icon-location">
+                        </p:commandButton> 
+                    </p:panelGrid>
                     <pm:field>
                         <p:outputLabel for="kname" value="Клиент:" />
                         <p:outputLabel id="kname" value="#{contactDetailsController.selected.kontragId.fullname}"/>
@@ -154,16 +163,7 @@
                     <pm:field>
                         <p:outputLabel for="email" value="E-Mail:" />
                         <p:inputText id="email" value="#{contactDetailsController.selected.email}" type="email"/>
-                    </pm:field>
-                    <p:panelGrid columns="2">
-                        <p:commandButton value="Сохранить" update=":viewTask:editForm:editFormPanel" action="#{contactDetailsController.update()}"
-                                         icon="ui-icon-check"/>
-                        <p:button value="Отменить" outcome="pm:viewTask?transition=flip" icon="ui-icon-check"/>
-
-                    </p:panelGrid>
-                    <p:commandButton update=":map:mapForm:coordstr" value="Найти" onclick="handleViewChange('map')" action="pm:map?transition=flip" icon="ui-icon-location">
-
-                    </p:commandButton>                    
+                    </pm:field>                   
                 </h:form>
             </pm:content>
         </pm:page>
@@ -229,7 +229,7 @@
 
         <pm:page id="viewOplata" lazy="true">
             <pm:header title="Новая оплата">
-                
+
             </pm:header>
             <pm:content>
                 <h:form id="viewOplForm" rendered="#{ordersTpOplatyController.selected != null}">
@@ -253,7 +253,7 @@
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="datopl" value="Дата:" />                        
-                        <p:calendar locale="ru" pattern="dd/MM/yyyy HH:mm:ss" required="true" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
+                        <p:calendar disabled="#{!p:ifGranted('administrator')}" locale="ru" pattern="dd/MM/yyyy HH:mm:ss" required="true" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
                             <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                         </p:calendar>
                     </pm:field>
@@ -271,14 +271,14 @@
                                            itemValue="#{userIdItem}"/>
                         </p:selectOneMenu>
                     </pm:field>
-                    
+
                 </h:form>
             </pm:content>
         </pm:page>
 
         <pm:page id="editOplata" lazy="true">
             <pm:header title="Текущая оплата">
-                
+
             </pm:header>
             <pm:content>
                 <h:form id="editOplForm" rendered="#{ordersTpOplatyController.selected != null}">
@@ -302,7 +302,7 @@
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="datopl" value="Дата:" />                        
-                        <p:calendar locale="ru" pattern="dd/MM/yyyy HH:mm:ss" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
+                        <p:calendar disabled="#{!p:ifGranted('administrator')}" locale="ru" pattern="dd/MM/yyyy HH:mm:ss" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
                             <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                         </p:calendar>
                     </pm:field>
@@ -367,7 +367,7 @@
 
         <pm:page id="newjob" lazy="true">
             <pm:header title="Новая работа">
-                
+
             </pm:header>
             <pm:content>
                 <p:outputPanel>

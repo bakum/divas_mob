@@ -56,6 +56,23 @@
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+    <security-constraint>
+        <display-name>DispatchArea</display-name>
+        <web-resource-collection>
+            <web-resource-name>Dispatch</web-resource-name>
+            <description/>
+            <url-pattern>/faces/dispatch.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>administrator</role-name>
+            <role-name>z_dispatcher</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>myrealm</realm-name>
