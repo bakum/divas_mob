@@ -5,6 +5,7 @@
  */
 package ua.divas.mob.session;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +27,12 @@ public class KontragentsFacade extends AbstractFacade<Kontragents> {
 
     public KontragentsFacade() {
         super(Kontragents.class);
+    }
+    
+    public List<Kontragents> findZamer(){
+        return getEntityManager().createNamedQuery("Kontragents.findByIsMeasurer", Kontragents.class)
+                .setParameter("isMeasurer", 1)
+                .getResultList();
     }
     
 }

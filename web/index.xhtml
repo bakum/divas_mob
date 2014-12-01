@@ -208,7 +208,8 @@
                                 </p:commandButton>
                             </f:facet>    
                             <p:commandLink update =":editOplata:editOplForm" action="pm:editOplata?transition=pop">
-                                <p:outputLabel style="font-weight: bold;" value="#{oplitem.sum} грн"/>
+                                <p:outputLabel style="font-weight: bold;" value="#{oplitem.sum} грн">
+                                    <f:convertNumber pattern="#0.00" locale="ru"/></p:outputLabel>
                                 <p:outputLabel style="font-style: italic; font-size: 0.75em;" value="#{oplitem.dat}">
                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                 </p:outputLabel>
@@ -259,7 +260,12 @@
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="sumopl" value="Сумма:" />                        
-                        <p:inputText required="true" id="sumopl" value="#{ordersTpOplatyController.selected.sum}" type="number"/>
+                        <p:inputText required="true" id="sumopl" value="#{ordersTpOplatyController.selected.sum}">
+                            <f:convertNumber pattern="#0.00" locale="ru"/>
+                            <f:validateDoubleRange minimum="0.00" maximum="1000000.00"/>
+                            <p:ajax update="msgSumopl" event="keyup"/>
+                        </p:inputText>
+                        <p:message id="msgSumopl" for="sumopl" display="tooltip" style="color: red;"/>
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="useropl" value="Оплату принял:" />
@@ -308,7 +314,12 @@
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="sumopl" value="Сумма:" />                        
-                        <p:inputText id="sumopl" value="#{ordersTpOplatyController.selected.sum}" type="number"/>
+                        <p:inputText id="sumopl" value="#{ordersTpOplatyController.selected.sum}">
+                            <f:convertNumber pattern="#0.00" locale="ru"/>
+                            <f:validateDoubleRange minimum="0.00" maximum="1000000.00"/>
+                            <p:ajax update="msgSumopl" event="keyup"/>
+                        </p:inputText>
+                        <p:message id="msgSumopl" for="sumopl" display="tooltip" style="color: red;"/>
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="useropl" value="Оплату принял:" />
@@ -349,7 +360,8 @@
 
                             <p:commandLink action="pm:newjob" update =":uslugiList:listUslForm,:newjob:newjobform">
                                 <p:outputLabel style="font-weight: bold;" value="#{uslitem.groupId.fullname} - #{uslitem.nomId.fullname}"/>
-                                <p:outputLabel style="font-style: italic; font-size: 0.75em;" value="Сумма: #{uslitem.summ} грн."/>
+                                <p:outputLabel style="font-style: italic; font-size: 0.75em;" value="Сумма: #{uslitem.summ} грн.">
+                                    <f:convertNumber pattern="#0.00" locale="ru"/></p:outputLabel>
                                 <f:setPropertyActionListener value="false" target="#{ordersTpUslugiController.editable}" />
                                 <f:setPropertyActionListener value="#{uslitem}" target="#{ordersTpUslugiController.selected}" />
                             </p:commandLink>
@@ -392,7 +404,7 @@
                             <p:inputText id="id" value="#{ordersTpUslugiController.selected.id}" title="Id" required="true" requiredMessage="The Id field is required."/>
                         </pm:field>
                         <pm:field>
-                            <p:outputLabel value="Вид:" for="groupId" />
+                            <p:outputLabel value="Вид работ:" for="groupId" />
                             <p:selectOneMenu id="groupId" value="#{ordersTpUslugiController.selected.groupId}"
                                              tabindex="0" immediate="true" >
                                 <f:selectItem itemLabel="---" itemValue="#{null}" />
@@ -417,18 +429,21 @@
                         <p:panelGrid columns="2">
                             <pm:field id="qtityId">
 
-                                <p:inputText id="qtity" value="#{ordersTpUslugiController.selected.quantity}" title="Кол-во" required="true" requiredMessage="The Quantity field is required."
-                                             type="number" style="margin: 10px" placeholder="Количество">
-                                    <f:convertNumber integerOnly="true" type="number" />
-                                    <p:ajax update="summId" listener="#{ordersTpUslugiController.quantityChanged(event)}"/>
+                                <p:inputText id="qtity" value="#{ordersTpUslugiController.selected.quantity}"
+                                             disabled="#{empty ordersTpUslugiController.itemsNomAvailableSelectOne}"
+                                             title="Кол-во" required="true" requiredMessage="The Quantity field is required."
+                                             style="margin: 10px" placeholder="Количество">
+                                    <f:validateDoubleRange minimum="0.00" maximum="1000000.00"/>
+                                    <p:ajax update="summId,msgqtity" event="keyup" listener="#{ordersTpUslugiController.quantityChanged(event)}"/>
                                 </p:inputText>
+                                 <p:message id="msgqtity" for="qtity" display="tooltip" style="color: red;"/>
                             </pm:field>
 
                             <pm:field id="msrId">
 
                                 <p:selectOneMenu id="measureId" value="#{ordersTpUslugiController.selected.measureId}" required="true" requiredMessage="The MeasureId field is required."
                                                  disabled="#{!p:ifGranted('administrator')}">
-                                    <f:selectItem itemLabel="---" itemValue="" />
+                                    <f:selectItem itemLabel="Единица измерения" itemValue="" />
                                     <f:selectItems value="#{measure.itemsAvailableSelectOne}"
                                                    var="msrIdItem" itemLabel="#{msrIdItem.fullname}"
                                                    itemValue="#{msrIdItem}"/>
@@ -438,12 +453,19 @@
                             <pm:field id="priceId">
 
                                 <p:inputText id="price" value="#{ordersTpUslugiController.selected.price}" title="Price" required="true" requiredMessage="The Price field is required."
-                                             type = "number" disabled="#{!p:ifGranted('administrator')}" style="margin: 5px" placeholder="Цена"/>
+                                             disabled="#{!p:ifGranted('administrator')}" style="margin: 5px" placeholder="Цена">
+                                     <f:convertNumber pattern="#0.00" locale="ru"/>
+                                    <f:validateDoubleRange minimum="0.00" maximum="1000000.00"/>
+                                    <p:ajax update="msgPrice" event="keyup"/></p:inputText>
+                                <p:message id="msgPrice" for="price" display="tooltip" style="color: red;"/>
                             </pm:field>
                             <pm:field id="summId">
 
                                 <p:inputText id="summ" value="#{ordersTpUslugiController.selected.summ}" title="Summ" required="true" requiredMessage="The Summ field is required."
-                                             type = "number" disabled="#{!p:ifGranted('administrator')}" style="margin: 5px" placeholder="Сумма"/>
+                                             disabled="#{!p:ifGranted('administrator')}" style="margin: 5px" placeholder="Сумма">
+                                    <f:validateDoubleRange minimum="0.00" maximum="1000000.00"/>
+                                    <f:convertNumber pattern="#0.00" locale="ru"/>
+                                </p:inputText>
                             </pm:field>
                             <pm:field rendered="false">
                                 <p:outputLabel value="Дата окончания:" for="datComplete" />
@@ -473,7 +495,7 @@
                             <p:selectOneMenu id="sotrId" value="#{ordersTpUslugiController.selected.sotrId}" disabled="#{!p:ifGranted('administrator')}"
                                              required="true" requiredMessage="The SotrId field is required.">
                                 <f:selectItem itemLabel="---" itemValue="" />
-                                <f:selectItems value="#{kontragents.itemsAvailableSelectOne}"
+                                <f:selectItems value="#{kontragents.zamerItemsAvaibleSelectOne}"
                                                var="konIdItem" itemLabel="#{konIdItem.fullname}"
                                                itemValue="#{konIdItem}"/>
                             </p:selectOneMenu>

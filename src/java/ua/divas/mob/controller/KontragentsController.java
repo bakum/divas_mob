@@ -58,6 +58,10 @@ public class KontragentsController implements Serializable{
         return getFacade().findAll();
     }
     
+    public List<Kontragents> getZamerItemsAvaibleSelectOne(){
+        return getFacade().findZamer();
+    }
+    
         @FacesConverter(forClass = Kontragents.class)
     public static class KontragentsControllerConverter implements Converter {
 
