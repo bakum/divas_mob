@@ -1,25 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="8">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="10">
         <file>
             <url>web/index.xhtml</url>
+            <bookmark id="10">
+                <name/>
+                <line>107</line>
+                <key/>
+            </bookmark>
+            <bookmark id="9">
+                <name/>
+                <line>158</line>
+                <key/>
+            </bookmark>
             <bookmark id="8">
                 <name/>
-                <line>264</line>
+                <line>267</line>
                 <key/>
             </bookmark>
             <bookmark id="7">
                 <name/>
-                <line>455</line>
+                <line>458</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/util/WLS_Utility.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/session/OrdersFacade.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/entity/OrderStatus.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/session/OrderStatusFacade.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/web/home.xhtml</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/entity/Orders.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/web/dispatch.xhtml</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/KontragentsController.java</file>
             <file>file:/home/bakum/NetBeansProjects/divas_mob/web/index.xhtml</file>
             <file>file:/home/bakum/NetBeansProjects/divas_mob/web/WEB-INF/web.xml</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/LoginController.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/web/resources/js/divas.js</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/util/DataQuery.java</file>
         </group>
     </open-files>
 </project-private>

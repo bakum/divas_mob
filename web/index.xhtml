@@ -60,7 +60,7 @@
                     <p:toolbar>
                         <f:facet name="left">
 
-                            <p:commandButton id="SaveBtnId" action="#{orders.update()}" update=":list:listForm" disabled="#{!orders.zamerChanged}"
+                            <p:commandButton id="SaveBtnId" action="#{orders.update()}" update=":list:listForm"
                                              value="Сохранить заказ" icon="ui-icon-check" oncomplete="pm:list?transition=flip"/> 
                         </f:facet>
                         <f:facet name="right">
@@ -83,7 +83,7 @@
                             <p:outputLabel for="statusId" value="Статус заказа:" />
                             <p:selectOneMenu id="statusId" value="#{orders.selected.statusId}"
                                              required="true" 
-                                             requiredMessage="Статус заказа обязателен для заполнения!" disabled="#{!(orders.haveOplaty() and orders.haveZamer())}">
+                                             requiredMessage="Статус заказа обязателен для заполнения!">
                                 <f:selectItems value="#{orderStatusController.itemsAvailableSelectOne}"
                                                var="statusIdItem" itemLabel="#{statusIdItem.fullname}"
                                                itemValue="#{statusIdItem}"/>
@@ -102,7 +102,10 @@
                         </pm:field>
                         <pm:field>
                             <p:outputLabel for="name" value="Клиент:" />
-                            <p:outputLabel id="name" value="#{orders.selected.kontragId.fullname}"/>
+                            <p:commandButton id="name" icon="ui-icon-action" value="#{orders.selected.kontragId.fullname}">
+                                <f:setPropertyActionListener value="#{orders.selected.kontragId}" target="#{kontragents.selected}" />
+                            </p:commandButton>
+                         <!--   <p:inputText id="name" -->
                         </pm:field>
                         <p:spacer></p:spacer>
                         <p:dataList var="contact" value="#{orders.selected.kontragId.contactDetailsCollection}">
@@ -118,7 +121,7 @@
                         <p:spacer></p:spacer>
                         <pm:field>
                             <p:outputLabel for="comments" value="Комментарий:" />
-                            <p:inputTextarea id="comments" disabled="true" value="#{orders.selected.discription}"/>
+                            <p:inputTextarea id="comments" value="#{orders.selected.discription}"/>
                         </pm:field>
 
 
@@ -154,15 +157,15 @@
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="phone" value="Телефон:" />
-                        <p:inputText id="phone" value="#{contactDetailsController.selected.phone}"/>
+                        <p:inputText rendered="#{p:ifGranted('administrator')}" id="phone" value="#{contactDetailsController.selected.phone}"/>
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="adress" value="Адрес:" />
-                        <p:inputTextarea id="adress" value="#{contactDetailsController.selected.adress}"/>
+                        <p:inputTextarea rendered="#{p:ifGranted('administrator')}" id="adress" value="#{contactDetailsController.selected.adress}"/>
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="email" value="E-Mail:" />
-                        <p:inputText id="email" value="#{contactDetailsController.selected.email}" type="email"/>
+                        <p:inputText rendered="#{p:ifGranted('administrator')}" id="email" value="#{contactDetailsController.selected.email}" type="email"/>
                     </pm:field>                   
                 </h:form>
             </pm:content>

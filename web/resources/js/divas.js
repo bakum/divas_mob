@@ -72,7 +72,8 @@ function setupMap(mapZoom, showOverviewControl) {
 }
 
 function initializeMap() {
-    setupMap(16, true);
+    if (google)
+        setupMap(16, true);
 }
 
 function resetMap() {

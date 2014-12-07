@@ -17,6 +17,7 @@ import ua.divas.mob.entity.OrderStatus;
  */
 @Stateless
 public class OrderStatusFacade extends AbstractFacade<OrderStatus> {
+
     @PersistenceContext(unitName = "divas_mobPU")
     private EntityManager em;
 
@@ -28,13 +29,15 @@ public class OrderStatusFacade extends AbstractFacade<OrderStatus> {
     public OrderStatusFacade() {
         super(OrderStatus.class);
     }
-    
+
     @Override
-     public List<OrderStatus> findAll() {
-         return getEntityManager().createNamedQuery("OrderStatus.findByNameForZamer", OrderStatus.class)
-                    .setParameter("name1", "ЗАМЕР")
-                    .setParameter("name2", "НЕОПЛАЧЕН")
-                    .getResultList();
-     }
-    
+    public List<OrderStatus> findAll() {
+        return getEntityManager().createNamedQuery("OrderStatus.findByNameForZamer", OrderStatus.class)
+                .setParameter("name1", "ЗАМЕР")
+                .setParameter("name2", "НЕОПЛАЧЕН")
+                .setParameter("name3", "ОТКАЗ")
+                .setParameter("name4", "КОНТРОЛЬ")
+                .getResultList();
+    }
+
 }

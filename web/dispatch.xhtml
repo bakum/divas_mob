@@ -13,12 +13,36 @@
     </h:head>
     <h:body>
         <pm:page id="home">
-            <pm:header title="Divas CRM - Диспечер" swatch="b">
+            <pm:header title="Divas CRM - Диспетчер" swatch="b">
                 <p:outputLabel styleClass="ui-btn-left ui-icon-user ui-btn-inline" value="#{p:remoteUser()}" />
                 <p:commandButton styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-power" value="Logout" action="#{login.doLogout()}"/>
             </pm:header>
             <pm:content>
-
+                <f:view>
+                    <h:form id="ordrForm">
+                        <p:growl id="msgsOrdr" showDetail="true" />
+                        <p:dataList var="item" value="#{orders.items}">
+                            <f:facet name="header"> 
+                                <p:panelGrid columns="2">
+                                    <p:button rendered="#{p:ifGranted('administrator')}" value="Главная" outcome="home" icon="ui-icon-home"/>
+                                    <p:commandButton immediate="true" icon="ui-icon-refresh" value="Обновить" action="#{orders.refresh()}"
+                                                     update=":home:ordrForm" ajax="false">
+                                    </p:commandButton>
+                                </p:panelGrid>                               
+                            </f:facet>
+                            <p:commandLink>
+                                <p:outputLabel style="font-weight: bold;" value="#{item.kontragId.fullname}"/>
+                                <p:outputLabel style="font-size: 0.75em;" value="Номер заказа: #{item.num} Замерщик: #{item.zamerId.fullname}"/>
+                                <f:setPropertyActionListener value="#{item}" target="#{orders.selected}" />
+                                <f:setPropertyActionListener value="#{item}" target="#{ordersTpOplatyController.master}" />
+                                <f:setPropertyActionListener value="#{item}" target="#{ordersTpUslugiController.master}" />
+                            </p:commandLink>
+                            <f:facet name="footer">
+                                Замеры
+                            </f:facet>
+                        </p:dataList>
+                    </h:form>                    
+                </f:view>
             </pm:content>
         </pm:page>
     </h:body>

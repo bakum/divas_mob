@@ -64,9 +64,16 @@ public class OrdersFacade extends AbstractFacade<Orders> {
     public List<Orders> findAll() {
         DataQuery q = getQuery();
         boolean admin = WLS_Utility.isMember("administrator", q.getSessionScopeAttr("username"), true);
+        boolean dispatch = WLS_Utility.isMember("z_dispatcher", q.getSessionScopeAttr("username"), true);
         if (admin) {
             return getEntityManager().createNamedQuery("Orders.findAllForAdmin", Orders.class)
                     .setParameter("statusid", this.getStatus())
+                    .getResultList();
+
+        } else if (dispatch) {
+            return getEntityManager().createNamedQuery("Orders.findAll", Orders.class)
+                    .setParameter("statusid", this.getStatus())
+                    .setParameter("zamerid", this.getZamer())
                     .getResultList();
 
         } else {
@@ -74,9 +81,7 @@ public class OrdersFacade extends AbstractFacade<Orders> {
                     .setParameter("statusid", this.getStatus())
                     .setParameter("zamerid", this.getZamer())
                     .getResultList();
-
         }
-        //return super.findAll(); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
