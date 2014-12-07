@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="10">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="11">
         <file>
             <url>web/index.xhtml</url>
             <bookmark id="10">
                 <name/>
-                <line>107</line>
+                <line>109</line>
+                <key/>
+            </bookmark>
+            <bookmark id="11">
+                <name/>
+                <line>114</line>
                 <key/>
             </bookmark>
             <bookmark id="9">
                 <name/>
-                <line>158</line>
+                <line>154</line>
                 <key/>
             </bookmark>
             <bookmark id="8">
                 <name/>
-                <line>267</line>
+                <line>253</line>
                 <key/>
             </bookmark>
             <bookmark id="7">
                 <name/>
-                <line>458</line>
+                <line>443</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/session/OrdersFacade.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/OrdersController.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/KontragentsController.java</file>
             <file>file:/home/bakum/NetBeansProjects/divas_mob/web/index.xhtml</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/ua/divas/mob/controller/OrdersTpUslugiController.java</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/web/resources/js/divas.js</file>
+            <file>file:/home/bakum/NetBeansProjects/divas_mob/src/java/Bundle.properties</file>
         </group>
     </open-files>
 </project-private>

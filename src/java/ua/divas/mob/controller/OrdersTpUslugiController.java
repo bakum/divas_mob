@@ -69,8 +69,18 @@ public class OrdersTpUslugiController implements Serializable {
     public void quantityChanged(AjaxBehaviorEvent e) {
         BigDecimal pr = getSelected().getPrice();
         BigDecimal qt = getSelected().getQuantity();
-        if (qt != null || pr != null) {
+        if (qt != null && pr != null) {
             getSelected().setSumm(pr.multiply(qt));
+        } else {
+            getSelected().setSumm(null);
+        }
+    }
+    
+    public void addChanged(AjaxBehaviorEvent e) {
+        BigDecimal sm = getSelected().getSumm();
+        BigDecimal ad = getSelected().getPriceAdd();
+        if (sm != null && ad != null) {
+            getSelected().setSumm(sm.add(ad));
         } else {
             getSelected().setSumm(null);
         }

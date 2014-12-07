@@ -32,9 +32,9 @@ PrimeFaces.locales ['ru'] = {
 
 function handleViewChange(viewName) {
     if (viewName == 'map') {
-        if (map == null) {
+        //if (map == null) {
             initializeMap();
-        }
+       // }
     }
 }
 
@@ -78,6 +78,8 @@ function initializeMap() {
 
 function resetMap() {
     map = null;
+    if (document.getElementById("map:mapForm:gmap"))
+        map = new google.maps.Map(document.getElementById("map:mapForm:gmap"));
 }
 
 function refreshMap() {
