@@ -155,17 +155,17 @@
                         <p:outputLabel for="kname" value="Клиент:" />
                         <p:outputLabel id="kname" value="#{contactDetailsController.selected.kontragId.fullname}"/>
                     </pm:field>
-                    <pm:field>
+                    <pm:field rendered="#{p:ifGranted('administrator')}">
                         <p:outputLabel for="phone" value="Телефон:" />
-                        <p:inputText rendered="#{p:ifGranted('administrator')}" id="phone" value="#{contactDetailsController.selected.phone}"/>
+                        <p:inputText id="phone" value="#{contactDetailsController.selected.phone}"/>
                     </pm:field>
-                    <pm:field>
+                    <pm:field rendered="#{p:ifGranted('administrator')}" >
                         <p:outputLabel for="adress" value="Адрес:" />
-                        <p:inputTextarea rendered="#{p:ifGranted('administrator')}" id="adress" value="#{contactDetailsController.selected.adress}"/>
+                        <p:inputTextarea id="adress" value="#{contactDetailsController.selected.adress}"/>
                     </pm:field>
-                    <pm:field>
+                    <pm:field rendered="#{p:ifGranted('administrator')}">
                         <p:outputLabel for="email" value="E-Mail:" />
-                        <p:inputText rendered="#{p:ifGranted('administrator')}" id="email" value="#{contactDetailsController.selected.email}" type="email"/>
+                        <p:inputText id="email" value="#{contactDetailsController.selected.email}" type="email"/>
                     </pm:field>                   
                 </h:form>
             </pm:content>
