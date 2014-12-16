@@ -35,8 +35,7 @@
                             <p:outputLabel style="font-weight: bold;" value="#{item.kontragId.fullname}"/>
                             <p:outputLabel style="font-size: 0.75em;" value="Номер заказа: #{item.num} Замерщик: #{item.zamerId.fullname}"/>
                             <f:setPropertyActionListener value="#{item}" target="#{orders.selected}" />
-                            <f:setPropertyActionListener value="#{item}" target="#{ordersTpOplatyController.master}" />
-                            <f:setPropertyActionListener value="#{item}" target="#{ordersTpUslugiController.master}" />
+                            
                         </p:commandLink>
                         <f:facet name="footer">
                             Замеры
@@ -185,14 +184,15 @@
                     <h:form id="listOplForm">
                         <p:growl id="msgsopl" showDetail="true" />
 
-                        <p:dataList id="datalist" var="oplitem" value="#{orders.selected.ordersTpOplatyCollection}">
+                        <p:dataList id="datalist" var="oplitem" value="#{orders.selected.ordersTpOplatyCollection}"
+                                    lazy="true">
                             <f:facet name="header"> 
                                 <p:outputLabel style="text-align: center; font-weight: bold;" value="#{orders.selected.kontragId.fullname}"/>
 
 
                                 <p:commandButton value="Добавить оплату" icon="ui-icon-plus" 
-                                                 update =":viewOplata:viewOplForm" action="pm:viewOplata?transition=pop"
-                                                 actionListener="#{ordersTpOplatyController.prepareCreate}">
+                                                 update =":viewOplata:viewOplForm" action="pm:viewOplata?transition=pop">
+                                    <f:setPropertyActionListener value="#{orders.selected}" target="#{ordersTpOplatyController.master}" />
                                 </p:commandButton>
                             </f:facet>    
                             <p:commandLink update =":editOplata:editOplForm" action="pm:editOplata?transition=pop">
@@ -226,7 +226,9 @@
                     <p:panelGrid columns="2">
                         <p:commandButton value="Сохранить" update=":listOplat:listOplForm,msgsopl" action="#{ordersTpOplatyController.create()}"
                                          oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
-                        <p:button value="Отменить" outcome="pm:listOplat?transition=flip" icon="ui-icon-recycle"/>
+                        <p:button value="Отменить" outcome="pm:listOplat?transition=flip" icon="ui-icon-recycle">
+
+                        </p:button>
                     </p:panelGrid>
                     <pm:field> 
                         <p:outputLabel style="text-align: center; font-weight: bold;" value="#{ordersTpOplatyController.master.kontragId.fullname}"/>
@@ -281,7 +283,10 @@
                         <p:commandButton value="Сохранить" update=":listOplat:listOplForm,msgsopl" action="#{ordersTpOplatyController.update()}"
                                          oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
 
-                        <p:button value="Отменить" outcome="pm:listOplat?transition=flip" icon="ui-icon-recycle"/>
+                        <p:commandButton value="Отменить" action="#{orders.resetOplaty}" icon="ui-icon-recycle"
+                                         update=":list:listForm,:listOplat:listOplForm:datalist">
+
+                        </p:commandButton>
                     </p:panelGrid>
                     <pm:field> 
                         <p:outputLabel style="text-align: center; font-weight: bold;" value="#{ordersTpOplatyController.master.kontragId.fullname}"/>
@@ -336,6 +341,7 @@
                                          update =":uslugiList:listUslForm,:uslugiList:addUslForm,:newjob:newjobform"
                                          actionListener="#{ordersTpUslugiController.prepareCreate}">
                             <f:setPropertyActionListener value="true" target="#{ordersTpUslugiController.editable}" />
+                            <f:setPropertyActionListener value="#{orders.selected}" target="#{ordersTpUslugiController.master}" />
                         </p:commandButton>
                     </h:form>
                 </p:outputPanel>
@@ -365,7 +371,7 @@
         </pm:page>
 
         <pm:page id="newjob" lazy="true">
-            <pm:header title="Новая работа">
+            <pm:header id="jobid" title="Работа">
 
             </pm:header>
             <pm:content>
@@ -378,7 +384,10 @@
                             <p:commandButton rendered="#{!ordersTpUslugiController.editable}" value="Сохранить" update=":listOplat:listOplForm,msgnewjob" action="#{ordersTpUslugiController.update()}"
                                              oncomplete="pm:listOplat?transition=flip" icon="ui-icon-check"/>
 
-                            <p:button value="Отменить" outcome="pm:uslugiList?transition=flip" icon="ui-icon-recycle"/>
+                            <p:commandButton rendered="#{!ordersTpUslugiController.editable}" value="Отменить" action="#{orders.resetUslugi}" icon="ui-icon-recycle"
+                                             update=":list:listForm,:uslugiList:listUslForm,:uslugiList:addUslForm,:newjob:newjobform">
+                            </p:commandButton>
+                            <p:button rendered="#{ordersTpUslugiController.editable}" value="Отменить" outcome="pm:uslugiList?transition=flip" icon="ui-icon-recycle"/>                           
                         </p:panelGrid>
                         <p:growl id="msgnewjob" showDetail="false" />
                         <pm:field> 
@@ -466,13 +475,13 @@
 
                             <p:inputText id="addPrice" value="#{ordersTpUslugiController.selected.priceAdd}"
                                          disabled="#{empty ordersTpUslugiController.selected.addWork}"
-                                             style="margin: 5px" placeholder="Доп. сумма">
-                                    <f:validateDoubleRange minimum="0.00" maximum="1000000.00"/>
-                                    <f:convertNumber pattern="#0.00" locale="ru"/>
-                                    <p:ajax update="msgaddprc" event="keyup"/>
-                                </p:inputText>
+                                         style="margin: 5px" placeholder="Доп. сумма">
+                                <f:validateDoubleRange minimum="0.00" maximum="1000000.00"/>
+                                <f:convertNumber pattern="#0.00" locale="ru"/>
+                                <p:ajax update="msgaddprc" event="keyup"/>
+                            </p:inputText>
                             <p:message id="msgaddprc" for="addPrice" display="tooltip" style="color: red;"/>
-                            </pm:field>
+                        </pm:field>
                         <pm:field rendered="false">
                             <p:outputLabel value="Дата окончания:" for="datComplete" />
                             <p:calendar locale="ru" pattern="dd/MM/yyyy" navigator="true" id="datComplete" value="#{ordersTpUslugiController.selected.datComplete}" 

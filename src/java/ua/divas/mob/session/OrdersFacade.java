@@ -5,6 +5,7 @@
  */
 package ua.divas.mob.session;
 
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,6 +14,8 @@ import ua.divas.mob.util.DataQuery;
 import ua.divas.mob.entity.Kontragents;
 import ua.divas.mob.entity.OrderStatus;
 import ua.divas.mob.entity.Orders;
+import ua.divas.mob.entity.OrdersTpOplaty;
+import ua.divas.mob.entity.OrdersTpUslugi;
 import ua.divas.mob.entity.Users;
 import ua.divas.mob.util.WLS_Utility;
 
@@ -59,7 +62,13 @@ public class OrdersFacade extends AbstractFacade<Orders> {
         Users u = q.getCurrentUser(q.getSessionScopeAttr(un));
         return q.getCurrenZamer(u.getLogin());
     }
-
+    
+    public Orders refreshOrder(Orders o) {
+        Orders mergedEntity = getEntityManager().merge(o);
+        getEntityManager().refresh(mergedEntity);
+        return mergedEntity;
+    }
+    
     @Override
     public List<Orders> findAll() {
         DataQuery q = getQuery();

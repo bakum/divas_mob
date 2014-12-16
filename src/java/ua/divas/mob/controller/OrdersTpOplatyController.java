@@ -6,6 +6,7 @@ import ua.divas.mob.util.JsfUtil.PersistAction;
 import ua.divas.mob.session.OrdersTpOplatyFacade;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -15,11 +16,13 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
 import ua.divas.mob.util.DataQuery;
 import ua.divas.mob.entity.Orders;
 import ua.divas.mob.entity.Users;
@@ -43,6 +46,7 @@ public class OrdersTpOplatyController implements Serializable {
 
     public void setMaster(Orders master) {
         this.master = master;
+        this.prepareCreate();
     }
 
     public OrdersTpOplaty getSelected() {
@@ -119,6 +123,19 @@ public class OrdersTpOplatyController implements Serializable {
         return items;
     }
 
+    private void hardReset() {
+        items = null;
+        items = getFacade().findAll();
+        Collection<OrdersTpOplaty> tp = null;
+        getMaster().getOrdersTpOplatyCollection().clear();
+        for (OrdersTpOplaty e : items) {
+            if (e.getOrderId().getId().equals(getMaster().getId())) {
+                tp.add(e);
+            }
+        }
+        getMaster().setOrdersTpOplatyCollection(tp);
+    }
+
     private void persist(PersistAction persistAction, String successMessage) {
         if (selected != null) {
             setEmbeddableKeys();
@@ -127,7 +144,7 @@ public class OrdersTpOplatyController implements Serializable {
                     if (persistAction != PersistAction.CREATE) {
                         getFacade().edit(selected);
                     } else {
-                        getFacade().create(selected);
+                        getFacade().edit(selected);
                         getMaster().getOrdersTpOplatyCollection().add(selected);
                     }
                 } else {

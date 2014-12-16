@@ -79,6 +79,7 @@ function initializeMap() {
 function resetMap() {
     map = null;
     if (document.getElementById("map:mapForm:gmap"))
+        //document.getElementById("map:mapForm:gmap").empty();
         map = new google.maps.Map(document.getElementById("map:mapForm:gmap"));
 }
 

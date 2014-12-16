@@ -291,6 +291,7 @@ public class Orders implements Serializable {
     public void setOrdersTpOplatyCollection(Collection<OrdersTpOplaty> ordersTpOplatyCollection) {
         this.ordersTpOplatyCollection = ordersTpOplatyCollection;
     }
+    
 
     @XmlTransient
     public Collection<OrdersTpUslugi> getOrdersTpUslugiCollection() {

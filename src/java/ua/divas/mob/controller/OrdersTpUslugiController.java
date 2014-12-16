@@ -16,12 +16,14 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.event.AjaxBehaviorEvent;
+import org.primefaces.context.RequestContext;
 import ua.divas.mob.entity.Kontragents;
 import ua.divas.mob.entity.LastPrices;
 import ua.divas.mob.entity.Nomenklatura;
@@ -76,6 +78,10 @@ public class OrdersTpUslugiController implements Serializable {
         }
     }
     
+    public void reset() {
+        RequestContext.getCurrentInstance().reset("editOplata:editOplForm");
+    }
+    
     public void addChanged(AjaxBehaviorEvent e) {
         BigDecimal sm = getSelected().getSumm();
         BigDecimal ad = getSelected().getPriceAdd();
@@ -92,6 +98,7 @@ public class OrdersTpUslugiController implements Serializable {
 
     public void setMaster(Orders master) {
         this.master = master;
+        this.prepareCreate();
     }
 
     public OrdersTpUslugi getSelected() {

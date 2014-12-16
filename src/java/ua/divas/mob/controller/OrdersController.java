@@ -13,11 +13,13 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.context.RequestContext;
 import ua.divas.mob.entity.OrdersTpOplaty;
 import ua.divas.mob.entity.OrdersTpUslugi;
 
@@ -54,6 +56,34 @@ public class OrdersController implements Serializable {
             return "color: blue;";
         }
         return "color: red";
+    }
+    
+    private void hardReset() {
+        getFacade().refreshOrder(selected);
+        items = null;
+        items = getFacade().findAll();
+        for (Orders element : items) {
+            if (element.getId().equals(selected.getId())) {
+                
+                setSelected(element);
+                break;
+            }
+        }
+        //selected.setOrdersTpOplatyCollection(getFacade().refreshTpOplatyCollection(selected.getOrdersTpOplatyCollection()));
+        selected.getOrdersTpOplatyCollection();
+        selected.getOrdersTpUslugiCollection();
+    }
+    
+    public String resetOplaty() {
+        hardReset();
+        RequestContext.getCurrentInstance().reset(":editOplata:editOplForm");
+        return "pm:listOplat?transition=flip";
+    }
+    
+    public String resetUslugi() {
+        hardReset();
+        RequestContext.getCurrentInstance().reset(":newjob:newjobform");
+        return "pm:uslugiList?transition=flip";
     }
 
     public String oplatyStatus() {
