@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o where o.deleted = 0 and o.statusId = :statusid and o.zamerId = :zamerid ORDER BY o.dat DESC"),
-    @NamedQuery(name = "Orders.findAllForAdmin", query = "SELECT o FROM Orders o where o.deleted = 0 and o.statusId = :statusid ORDER BY o.dat DESC"),
+    @NamedQuery(name = "Orders.findAllForAdmin", query = "SELECT o FROM Orders o where o.deleted = 0 ORDER BY o.dat DESC"),
+    @NamedQuery(name = "Orders.findAllForDispatch", query = "SELECT o FROM Orders o where o.deleted = 0 and o.statusId in (:name1, :name2) ORDER BY o.dat DESC"),
     @NamedQuery(name = "Orders.findById", query = "SELECT o FROM Orders o WHERE o.id = :id"),
     @NamedQuery(name = "Orders.findByDat", query = "SELECT o FROM Orders o WHERE o.dat = :dat"),
     @NamedQuery(name = "Orders.findByNum", query = "SELECT o FROM Orders o WHERE o.num = :num"),

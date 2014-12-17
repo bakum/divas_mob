@@ -10,6 +10,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import ua.divas.mob.entity.OrderStatus;
+import ua.divas.mob.util.DataQuery;
+import ua.divas.mob.util.WLS_Utility;
 
 /**
  *
@@ -30,14 +32,34 @@ public class OrderStatusFacade extends AbstractFacade<OrderStatus> {
         super(OrderStatus.class);
     }
 
+    private DataQuery getQuery() {
+        return new DataQuery();
+    }
+
     @Override
     public List<OrderStatus> findAll() {
-        return getEntityManager().createNamedQuery("OrderStatus.findByNameForZamer", OrderStatus.class)
-                .setParameter("name1", "ЗАМЕР")
-                .setParameter("name2", "НЕОПЛАЧЕН")
-                .setParameter("name3", "ОТКАЗ")
-                .setParameter("name4", "КОНТРОЛЬ")
-                .getResultList();
+        DataQuery q = getQuery();
+        boolean admin = WLS_Utility.isMember("administrator", q.getSessionScopeAttr("username"), true);
+        boolean dispatch = WLS_Utility.isMember("z_dispatcher", q.getSessionScopeAttr("username"), true);
+        if (admin) {
+            return getEntityManager().createNamedQuery("OrderStatus.findAll", OrderStatus.class)
+                    .getResultList();
+        } else if (dispatch) {
+            return getEntityManager().createNamedQuery("OrderStatus.findByNameForDispatch", OrderStatus.class)
+                    .setParameter("name1", "ЗАМЕР")
+                    .setParameter("name2", "НЕОПЛАЧЕН")
+                    .setParameter("name3", "ОТКАЗ")
+                    .setParameter("name4", "КОНТРОЛЬ")
+                    .setParameter("name5", "НОВЫЙ")
+                    .getResultList();
+        } else {
+            return getEntityManager().createNamedQuery("OrderStatus.findByNameForZamer", OrderStatus.class)
+                    .setParameter("name1", "ЗАМЕР")
+                    .setParameter("name2", "НЕОПЛАЧЕН")
+                    .setParameter("name3", "ОТКАЗ")
+                    .setParameter("name4", "КОНТРОЛЬ")
+                    .getResultList();
+        }
     }
 
 }

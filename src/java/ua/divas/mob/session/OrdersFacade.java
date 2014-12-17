@@ -54,6 +54,11 @@ public class OrdersFacade extends AbstractFacade<Orders> {
         DataQuery q = getQuery();
         return q.getZamerOrderStatus();
     }
+    
+    private OrderStatus getNewStatus() {
+        DataQuery q = getQuery();
+        return q.getNewOrderStatus();
+    }
 
     private Kontragents getZamer() {
         String un = "username";
@@ -76,13 +81,12 @@ public class OrdersFacade extends AbstractFacade<Orders> {
         boolean dispatch = WLS_Utility.isMember("z_dispatcher", q.getSessionScopeAttr("username"), true);
         if (admin) {
             return getEntityManager().createNamedQuery("Orders.findAllForAdmin", Orders.class)
-                    .setParameter("statusid", this.getStatus())
                     .getResultList();
 
         } else if (dispatch) {
-            return getEntityManager().createNamedQuery("Orders.findAll", Orders.class)
-                    .setParameter("statusid", this.getStatus())
-                    .setParameter("zamerid", this.getZamer())
+            return getEntityManager().createNamedQuery("Orders.findAllForDispatch", Orders.class)
+                    .setParameter("name1", this.getStatus())
+                    .setParameter("name2", this.getNewStatus())
                     .getResultList();
 
         } else {

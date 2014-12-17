@@ -186,9 +186,9 @@ public class OrdersController implements Serializable {
     public List<Orders> getItems() {
         if (items == null) {
             items = getFacade().findAll();
-//            for (Orders item : items) {
-//                item.getOrdersTpOplatyCollection().addAll(null);
-//            }
+            for (Orders item : items) {
+                getFacade().refreshOrder(item);
+            }
         }
         return items;
     }

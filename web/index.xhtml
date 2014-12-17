@@ -82,6 +82,7 @@
                             <p:selectOneMenu id="statusId" value="#{orders.selected.statusId}"
                                              required="true" 
                                              requiredMessage="Статус заказа обязателен для заполнения!">
+                                <f:selectItem itemLabel="---" itemValue="#{null}" />
                                 <f:selectItems value="#{orderStatusController.itemsAvailableSelectOne}"
                                                var="statusIdItem" itemLabel="#{statusIdItem.fullname}"
                                                itemValue="#{statusIdItem}"/>

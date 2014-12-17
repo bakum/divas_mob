@@ -69,6 +69,7 @@ public class OrdersTpOplatyController implements Serializable {
 
     private Users getCurrentUser() {
         DataQuery q = new DataQuery();
+        System.out.println(q.getCurrentUser(q.getSessionScopeAttr("username")));
         return q.getCurrentUser(q.getSessionScopeAttr("username"));
     }
 
