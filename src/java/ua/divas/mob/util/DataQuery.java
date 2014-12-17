@@ -151,5 +151,19 @@ public class DataQuery {
             return null;
         }  
     }
+    
+    public OrderStatus getZamerNotPayOrderStatus() {
+        try {
+            OrderStatus u = em.createNamedQuery("OrderStatus.findByName", OrderStatus.class)
+                    .setParameter("name", "НеОплачен")
+                    .getSingleResult();
+            if (u != null) {
+                return u;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }  
+    }
 
 }

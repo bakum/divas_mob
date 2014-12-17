@@ -59,6 +59,11 @@ public class OrdersFacade extends AbstractFacade<Orders> {
         DataQuery q = getQuery();
         return q.getNewOrderStatus();
     }
+    
+    private OrderStatus getNotPayStatus() {
+        DataQuery q = getQuery();
+        return q.getZamerNotPayOrderStatus();
+    }
 
     private Kontragents getZamer() {
         String un = "username";
@@ -87,6 +92,7 @@ public class OrdersFacade extends AbstractFacade<Orders> {
             return getEntityManager().createNamedQuery("Orders.findAllForDispatch", Orders.class)
                     .setParameter("name1", this.getStatus())
                     .setParameter("name2", this.getNewStatus())
+                    .setParameter("name3", this.getNotPayStatus())
                     .getResultList();
 
         } else {
