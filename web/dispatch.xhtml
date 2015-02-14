@@ -32,8 +32,7 @@
                 <f:view>
                     <h:form id="listForm">
                         <p:growl id="msgs" showDetail="true" />
-                        <p:dataList var="item" value="#{orders.items}"
-                                     itemStyleClass="#{item.statusId.name == 'New' ? 'redcolor':'greencolor'}">                                    
+                        <p:dataList var="item" value="#{orders.items}">                                    
                             <f:facet name="header"> 
                                 <p:panelGrid columns="2">
                                     <p:button rendered="#{p:ifGranted('administrator')}" value="Главная" outcome="home" icon="ui-icon-home"/>
@@ -43,7 +42,7 @@
                                 </p:panelGrid>                               
                             </f:facet>
                             <p:commandLink update =":viewTask:editForm:editFormPanel" action="pm:viewTask">
-                                <p:outputLabel style="font-weight: bold;" value="#{item.kontragId.fullname} Статус: #{item.statusId.fullname}"/>
+                                <p:outputLabel style="#{item.statusId.name == 'Новый' ? 'font-weight: bold; color:Red;':'font-weight: bold; color:Green;'}" value="#{item.kontragId.fullname} Статус: #{item.statusId.fullname}"/>
                                 <p:outputLabel style="font-size: 0.75em;" value="Номер заказа: #{item.num} Замерщик: #{item.zamerId.fullname}"/>
                                 <f:setPropertyActionListener value="#{item}" target="#{orders.selected}" />
                             </p:commandLink>
