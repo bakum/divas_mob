@@ -48,6 +48,23 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Orders.findByVersion", query = "SELECT o FROM Orders o WHERE o.version = :version"),
     @NamedQuery(name = "Orders.findByPosted", query = "SELECT o FROM Orders o WHERE o.posted = :posted")})
 public class Orders implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "DAT_ZAM")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datZam;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 5)
+    @Column(name = "TIME_ZAM")
+    private String timeZam;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "SUMM_PLAN")
+    private BigDecimal summPlan;
+    @Column(name = "DAT_COMPLETE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datComplete;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -326,6 +343,38 @@ public class Orders implements Serializable {
     @Override
     public String toString() {
         return "ua.divas.mob.entity.Orders[ id=" + id + " ]";
+    }
+
+    public Date getDatZam() {
+        return datZam;
+    }
+
+    public void setDatZam(Date datZam) {
+        this.datZam = datZam;
+    }
+
+    public String getTimeZam() {
+        return timeZam;
+    }
+
+    public void setTimeZam(String timeZam) {
+        this.timeZam = timeZam;
+    }
+
+    public BigDecimal getSummPlan() {
+        return summPlan;
+    }
+
+    public void setSummPlan(BigDecimal summPlan) {
+        this.summPlan = summPlan;
+    }
+
+    public Date getDatComplete() {
+        return datComplete;
+    }
+
+    public void setDatComplete(Date datComplete) {
+        this.datComplete = datComplete;
     }
     
 }

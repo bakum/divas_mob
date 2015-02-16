@@ -42,7 +42,14 @@
                                 </p:panelGrid>                               
                             </f:facet>
                             <p:commandLink update =":viewTask:editForm:editFormPanel" action="pm:viewTask">
-                                <p:outputLabel style="#{item.statusId.name == 'Новый' ? 'font-weight: bold; color:Red;':'font-weight: bold; color:Green;'}" value="#{item.kontragId.fullname} Статус: #{item.statusId.fullname}"/>
+                                <p:outputLabel style="#{item.statusId.name == 'Новый' ? 'font-weight: bold; color:Red;':''}" value="#{item.kontragId.fullname} Статус: #{item.statusId.fullname}"/>
+                                <p:outputLabel style="font-size: 0.75em;" value="Менеджер: #{item.userId.login}"/>
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel for="dt_zam" style="font-size: 0.75em; color: brown;" value="Время замера:" />
+                                    <p:outputLabel id="dt_zam" style="font-size: 0.75em; color: brown;" value="#{item.datZam}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                    </p:outputLabel>
+                                </p:panelGrid>
                                 <p:outputLabel style="font-size: 0.75em;" value="Номер заказа: #{item.num} Замерщик: #{item.zamerId.fullname}"/>
                                 <f:setPropertyActionListener value="#{item}" target="#{orders.selected}" />
                             </p:commandLink>
@@ -133,6 +140,10 @@
                         <pm:field>
                             <p:outputLabel for="comments" value="Комментарий:" />
                             <p:inputTextarea id="comments" value="#{orders.selected.discription}"/>
+                        </pm:field>
+                        <pm:field>
+                            <p:outputLabel for="lb_man" value="Менеджер:" />
+                            <p:outputLabel id="lb_man" value="#{orders.selected.userId.login}"/>
                         </pm:field>
                     </p:outputPanel>
                 </h:form>                              
