@@ -18,6 +18,8 @@ import javax.management.ReflectionException;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
+import ua.divas.mob.entity.OrderStatus;
+import ua.divas.mob.entity.WlsSettings;
 
 /**
  *
@@ -39,13 +41,22 @@ public class WLS_Utility implements Serializable {
     private static ObjectName defaultAuthenticator;
     private static ObjectName[] authenticationProviders;
     private static String authenticatorName = "db_users";
+    
+    private static DataQuery getQuery() {
+        return new DataQuery();
+    }
+
+    private static WlsSettings getWlsSettings() {
+        DataQuery q = getQuery();
+        return q.getCurrentWlsSettings();
+    }
 
     static {
         try {
-            String host = "127.0.0.1";
-            String port = "7101";
-            String username = "weblogic";
-            String password = "!stigmata70";
+            String host = getWlsSettings().getHost();
+            String port = getWlsSettings().getPort();
+            String username = getWlsSettings().getUsername();
+            String password = getWlsSettings().getPassword();
             Hashtable h = new Hashtable();
             JMXServiceURL serviceURL;
 

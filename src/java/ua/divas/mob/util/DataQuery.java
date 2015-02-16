@@ -16,6 +16,7 @@ import ua.divas.mob.entity.Nomenklatura;
 import ua.divas.mob.entity.OrderStatus;
 import ua.divas.mob.entity.UserSettings;
 import ua.divas.mob.entity.Users;
+import ua.divas.mob.entity.WlsSettings;
 
 /**
  *
@@ -109,6 +110,19 @@ public class DataQuery {
         }    
         
     } 
+    
+    public WlsSettings getCurrentWlsSettings () {
+        try {
+            WlsSettings u = em.createNamedQuery("WlsSettings.findAll", WlsSettings.class)
+                    .getSingleResult();
+            if (u != null) {
+                return u;
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        } 
+    }
     
     public UserSettings getCurrentUserSettings (Users userid) {
         try {
