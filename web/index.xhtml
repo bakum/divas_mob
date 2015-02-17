@@ -255,8 +255,8 @@
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="datopl" value="Дата:" />                        
-                        <p:calendar navigator="true" disabled="#{!p:ifGranted('administrator')}" locale="ru" pattern="dd/MM/yyyy HH:mm:ss" required="true" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
-                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                        <p:calendar disabled="#{!p:ifGranted('administrator')}" locale="ru" pattern="dd/MM/yyyy" required="true" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
+                        <!--    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
                         </p:calendar>
                     </pm:field>
                     <pm:field>
@@ -312,8 +312,8 @@
                     </pm:field>
                     <pm:field>
                         <p:outputLabel for="datopl" value="Дата:" />                        
-                        <p:calendar disabled="#{!p:ifGranted('administrator')}" locale="ru" pattern="dd/MM/yyyy HH:mm:ss" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
-                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                        <p:calendar disabled="#{!p:ifGranted('administrator')}" locale="ru" pattern="dd/MM/yyyy" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
+                       <!--     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
                         </p:calendar>
                     </pm:field>
                     <pm:field>
