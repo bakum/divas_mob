@@ -72,6 +72,13 @@
                     <p:commandButton id="SaveBtnId" action="#{orders.update()}" update=":list:listForm"
                                      value="Сохранить заказ" icon="ui-icon-check" oncomplete="pm:list?transition=flip"/> 
                     <p:outputPanel id="editFormPanel" >
+                        <pm:field>
+                            <p:outputLabel for="datzam" value="Время замера:" />
+                            <p:inputText id="datzam" value="#{orders.selected.datZam}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                            </p:inputText>
+                           <!-- <p:calendar locale="ru" pattern="dd/MM/yyyy HH:mm:ss" id="datzam" value="#{orders.selected.datZam}"/> -->
+                        </pm:field>
                         <p:panelGrid columns="2">
                             <pm:field>
                                 <p:outputLabel rendered="#{!orders.haveOplaty()}" style="color: red;font-size: 0.75em" id="statusop" value="#{orders.oplatyStatus()}" />

@@ -74,6 +74,13 @@
                         </f:facet>                    
                     </p:toolbar>  
                     <p:outputPanel id="editFormPanel" >
+                        <pm:field>
+                            <p:outputLabel for="datzam" value="Время замера:" />
+                            <p:inputText id="datzam" value="#{orders.selected.datZam}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                            </p:inputText>
+                           <!-- <p:calendar locale="ru" pattern="dd/MM/yyyy HH:mm:ss" id="datzam" value="#{orders.selected.datZam}"/> -->
+                        </pm:field>
                         <p:panelGrid columns="2">
                             <pm:field>
                                 <p:outputLabel rendered="#{!orders.haveOplaty()}" style="color: red;font-size: 0.75em" id="statusop" value="#{orders.oplatyStatus()}" />
@@ -256,7 +263,7 @@
                     <pm:field>
                         <p:outputLabel for="datopl" value="Дата:" />                        
                         <p:calendar disabled="#{!p:ifGranted('administrator')}" locale="ru" pattern="dd/MM/yyyy" required="true" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
-                        <!--    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
+                            <!--    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
                         </p:calendar>
                     </pm:field>
                     <pm:field>
@@ -313,7 +320,7 @@
                     <pm:field>
                         <p:outputLabel for="datopl" value="Дата:" />                        
                         <p:calendar disabled="#{!p:ifGranted('administrator')}" locale="ru" pattern="dd/MM/yyyy" id="datopl" value="#{ordersTpOplatyController.selected.dat}">
-                       <!--     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
+                            <!--     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" /> -->
                         </p:calendar>
                     </pm:field>
                     <pm:field>
