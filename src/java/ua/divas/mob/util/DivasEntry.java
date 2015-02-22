@@ -89,6 +89,7 @@ public class DivasEntry implements Serializable {
             ctx = new InitialContext();
         } catch (NamingException ex) {
             Logger.getLogger(DivasEntry.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
         DataSource ds = (DataSource) ctx.lookup("jdbc/divas_mobiDS");
         dbConnection = ds.getConnection();
