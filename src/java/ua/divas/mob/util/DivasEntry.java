@@ -67,66 +67,43 @@ public class DivasEntry implements Serializable {
     private static final String DB_PASSWORD = "divas";
 
     private static Connection getDBConnection() {
-
         Connection dbConnection = null;
-
         try {
-
             Class.forName(DB_DRIVER);
-
         } catch (ClassNotFoundException e) {
-
             System.out.println(e.getMessage());
-
         }
-
         try {
-
             dbConnection = DriverManager.getConnection(
                     DB_CONNECTION, DB_USER, DB_PASSWORD);
             return dbConnection;
-
         } catch (SQLException e) {
-
             System.out.println(e.getMessage());
-
         }
-
         return dbConnection;
-
     }
 
     public static void entryOrders(Orders order) throws SQLException {
         Connection dbConnection = null;
         CallableStatement callableStatement = null;
-        
         String entryStoreProc = "begin ORDERS_ENTRY.ORDERS_MOVE_PLAN_ACC(?); end;";
-        
         try {
-			dbConnection = getDBConnection();
-			callableStatement = dbConnection.prepareCall(entryStoreProc);
-                        //System.out.println(order.getId());
-			callableStatement.setString(1, order.getId());
- 
-			callableStatement.executeUpdate();
- 
-			System.out.println("Record is entry!");
- 
-		} catch (SQLException e) {
- 
-			System.out.println(e.getMessage());
- 
-		} finally {
- 
-			if (callableStatement != null) {
-				callableStatement.close();
-			}
- 
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
- 
-		}
+            dbConnection = getDBConnection();
+            callableStatement = dbConnection.prepareCall(entryStoreProc);
+            //System.out.println(order.getId());
+            callableStatement.setString(1, order.getId());
+            callableStatement.executeUpdate();
+            System.out.println("Record is entry!");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            if (callableStatement != null) {
+                callableStatement.close();
+            }
+            if (dbConnection != null) {
+                dbConnection.close();
+            }
+        }
     }
 
 }
