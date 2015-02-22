@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,6 +28,7 @@ import ua.divas.mob.entity.LastPrices;
 import ua.divas.mob.entity.Nomenklatura;
 import ua.divas.mob.entity.Orders;
 import ua.divas.mob.util.DataQuery;
+import ua.divas.mob.util.DivasEntry;
 
 @ManagedBean(name = "ordersTpUslugiController")
 @SessionScoped
@@ -183,6 +183,7 @@ public class OrdersTpUslugiController implements Serializable {
                 } else {
                     getFacade().remove(selected);
                 }
+                DivasEntry.entryOrders(master);
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";

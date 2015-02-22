@@ -50,6 +50,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Kontragents.findByIsBuyer", query = "SELECT k FROM Kontragents k WHERE k.isBuyer = :isBuyer"),
     @NamedQuery(name = "Kontragents.findByIsMeasurer", query = "SELECT k FROM Kontragents k WHERE k.isMeasurer = :isMeasurer")})
 public class Kontragents implements Serializable {
+    @OneToMany(mappedBy = "zamerId")
+    private Collection<OrdersTpOplaty> ordersTpOplatyCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -340,6 +342,15 @@ public class Kontragents implements Serializable {
     @Override
     public String toString() {
         return "ua.divas.mob.entity.Kontragents[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<OrdersTpOplaty> getOrdersTpOplatyCollection() {
+        return ordersTpOplatyCollection;
+    }
+
+    public void setOrdersTpOplatyCollection(Collection<OrdersTpOplaty> ordersTpOplatyCollection) {
+        this.ordersTpOplatyCollection = ordersTpOplatyCollection;
     }
     
 }

@@ -275,14 +275,24 @@
                         </p:inputText>
                         <p:message id="msgSumopl" for="sumopl" display="tooltip" style="color: red;"/>
                     </pm:field>
-                    <pm:field>
-                        <p:outputLabel for="useropl" value="Оплату принял:" />
+                    <pm:field rendered="#{p:ifGranted('administrator')}">
+                        <p:outputLabel for="useropl" value="Ответственный:" />
                         <p:selectOneMenu id="useropl" value="#{ordersTpOplatyController.selected.userId}"
                                          required="true" 
                                          requiredMessage="Пользователь обязателен для заполнения!" disabled="#{!p:ifGranted('administrator')}">
                             <f:selectItems value="#{usersController.itemsAvailableSelectOne}"
                                            var="userIdItem" itemLabel="#{userIdItem}"
                                            itemValue="#{userIdItem}"/>
+                        </p:selectOneMenu>
+                    </pm:field>
+                    <pm:field>
+                        <p:outputLabel for="zameropl" value="Оплату принял:" />
+                        <p:selectOneMenu id="zameropl" value="#{ordersTpOplatyController.selected.zamerId}"
+                                         disabled="#{!p:ifGranted('administrator')}">
+                            <f:selectItem itemLabel="---" itemValue="#{null}" />
+                            <f:selectItems value="#{kontragents.zamerItemsAvaibleSelectOne}"
+                                           var="zamerIdItem" itemLabel="#{zamerIdItem.fullname}"
+                                           itemValue="#{zamerIdItem}"/>
                         </p:selectOneMenu>
                     </pm:field>
 
@@ -332,8 +342,8 @@
                         </p:inputText>
                         <p:message id="msgSumopl" for="sumopl" display="tooltip" style="color: red;"/>
                     </pm:field>
-                    <pm:field>
-                        <p:outputLabel for="useropl" value="Оплату принял:" />
+                    <pm:field rendered="#{p:ifGranted('administrator')}">
+                        <p:outputLabel for="useropl" value="Ответственный:" />
                         <p:selectOneMenu id="useropl" value="#{ordersTpOplatyController.selected.userId}"
                                          required="true"
                                          requiredMessage="Пользователь обязателен для заполнения!" disabled="#{!p:ifGranted('administrator')}">
@@ -341,7 +351,17 @@
                                            var="userIdItem" itemLabel="#{userIdItem}"
                                            itemValue="#{userIdItem}"/>
                         </p:selectOneMenu>
-                    </pm:field>                    
+                    </pm:field>
+                    <pm:field>
+                        <p:outputLabel for="zameropl" value="Оплату принял:" />
+                        <p:selectOneMenu id="zameropl" value="#{ordersTpOplatyController.selected.zamerId}"
+                                         disabled="#{!p:ifGranted('administrator')}">
+                            <f:selectItem itemLabel="---" itemValue="#{null}" />
+                            <f:selectItems value="#{kontragents.zamerItemsAvaibleSelectOne}"
+                                           var="zamerIdItem" itemLabel="#{zamerIdItem.fullname}"
+                                           itemValue="#{zamerIdItem}"/>
+                        </p:selectOneMenu>
+                    </pm:field>
                 </h:form>
             </pm:content>
         </pm:page>

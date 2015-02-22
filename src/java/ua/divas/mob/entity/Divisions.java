@@ -42,6 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Divisions.findByVersion", query = "SELECT d FROM Divisions d WHERE d.version = :version"),
     @NamedQuery(name = "Divisions.findByPredefined", query = "SELECT d FROM Divisions d WHERE d.predefined = :predefined")})
 public class Divisions implements Serializable {
+    @JoinColumn(name = "MAIN_USER", referencedColumnName = "ID")
+    @ManyToOne
+    private Users mainUser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "divisionId")
     private Collection<UserSettings> userSettingsCollection;
     private static final long serialVersionUID = 1L;
@@ -214,6 +217,14 @@ public class Divisions implements Serializable {
 
     public void setUserSettingsCollection(Collection<UserSettings> userSettingsCollection) {
         this.userSettingsCollection = userSettingsCollection;
+    }
+
+    public Users getMainUser() {
+        return mainUser;
+    }
+
+    public void setMainUser(Users mainUser) {
+        this.mainUser = mainUser;
     }
     
 }

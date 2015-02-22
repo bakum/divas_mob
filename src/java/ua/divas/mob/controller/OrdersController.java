@@ -22,6 +22,7 @@ import javax.faces.convert.FacesConverter;
 import org.primefaces.context.RequestContext;
 import ua.divas.mob.entity.OrdersTpOplaty;
 import ua.divas.mob.entity.OrdersTpUslugi;
+import ua.divas.mob.util.DivasEntry;
 
 @ManagedBean(name = "orders")
 @SessionScoped
@@ -202,6 +203,7 @@ public class OrdersController implements Serializable {
                 } else {
                     getFacade().remove(selected);
                 }
+                DivasEntry.entryOrders(selected);
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";

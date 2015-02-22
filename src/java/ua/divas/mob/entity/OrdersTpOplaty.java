@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OrdersTpOplaty.findBySum", query = "SELECT o FROM OrdersTpOplaty o WHERE o.sum = :sum"),
     @NamedQuery(name = "OrdersTpOplaty.findByComments", query = "SELECT o FROM OrdersTpOplaty o WHERE o.comments = :comments")})
 public class OrdersTpOplaty implements Serializable {
+    @JoinColumn(name = "ZAMER_ID", referencedColumnName = "ID")
+    @ManyToOne
+    private Kontragents zamerId;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -148,6 +151,14 @@ public class OrdersTpOplaty implements Serializable {
     @Override
     public String toString() {
         return "ua.divas.mob.entity.OrdersTpOplaty[ id=" + id + " ]";
+    }
+
+    public Kontragents getZamerId() {
+        return zamerId;
+    }
+
+    public void setZamerId(Kontragents zamerId) {
+        this.zamerId = zamerId;
     }
     
 }

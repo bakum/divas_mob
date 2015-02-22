@@ -16,16 +16,16 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import org.primefaces.context.RequestContext;
+import ua.divas.mob.entity.Kontragents;
 import ua.divas.mob.util.DataQuery;
 import ua.divas.mob.entity.Orders;
 import ua.divas.mob.entity.Users;
+import ua.divas.mob.util.DivasEntry;
 
 @ManagedBean(name = "ordersTpOplatyController")
 @SessionScoped
@@ -72,6 +72,11 @@ public class OrdersTpOplatyController implements Serializable {
         System.out.println(q.getCurrentUser(q.getSessionScopeAttr("username")));
         return q.getCurrentUser(q.getSessionScopeAttr("username"));
     }
+    
+    protected Kontragents getCurrentZamer(){
+        DataQuery q = new DataQuery();
+        return q.getCurrenZamer(q.getSessionScopeAttr("username"));
+    }
 
     private void initializeDefaultValue() {
         selected.setId(UUID.randomUUID().toString());
@@ -79,6 +84,7 @@ public class OrdersTpOplatyController implements Serializable {
         selected.setOrderId(master);
         //selected.setSum(BigDecimal.ZERO);
         selected.setUserId(getCurrentUser());
+        selected.setZamerId(getCurrentZamer());
     }
 
     public String refresh() {
@@ -151,6 +157,7 @@ public class OrdersTpOplatyController implements Serializable {
                 } else {
                     getFacade().remove(selected);
                 }
+                DivasEntry.entryOrders(master);
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";
