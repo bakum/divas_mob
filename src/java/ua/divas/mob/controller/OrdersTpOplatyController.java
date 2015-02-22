@@ -157,7 +157,7 @@ public class OrdersTpOplatyController implements Serializable {
                 } else {
                     getFacade().remove(selected);
                 }
-                DivasEntry.entryOrders(master);
+                DivasEntry.entryOrders(selected.getOrderId());
                 JsfUtil.addSuccessMessage(successMessage);
             } catch (EJBException ex) {
                 String msg = "";
