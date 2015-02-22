@@ -18,7 +18,6 @@ import javax.management.ReflectionException;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
-import ua.divas.mob.entity.OrderStatus;
 import ua.divas.mob.entity.WlsSettings;
 
 /**
