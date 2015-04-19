@@ -32,6 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserSettings.findAll", query = "SELECT u FROM UserSettings u"),
     @NamedQuery(name = "UserSettings.findById", query = "SELECT u FROM UserSettings u WHERE u.id = :id")})
 public class UserSettings implements Serializable {
+    @JoinColumn(name = "ZAMERKONTRAG_ID", referencedColumnName = "ID")
+    @ManyToOne
+    private Kontragents zamerkontragId;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -155,6 +158,14 @@ public class UserSettings implements Serializable {
     @Override
     public String toString() {
         return "ua.divas.mob.entity.UserSettings[ id=" + id + " ]";
+    }
+
+    public Kontragents getZamerkontragId() {
+        return zamerkontragId;
+    }
+
+    public void setZamerkontragId(Kontragents zamerkontragId) {
+        this.zamerkontragId = zamerkontragId;
     }
     
 }

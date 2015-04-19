@@ -50,6 +50,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Kontragents.findByIsBuyer", query = "SELECT k FROM Kontragents k WHERE k.isBuyer = :isBuyer"),
     @NamedQuery(name = "Kontragents.findByIsMeasurer", query = "SELECT k FROM Kontragents k WHERE k.isMeasurer = :isMeasurer")})
 public class Kontragents implements Serializable {
+    @OneToMany(mappedBy = "zamerkontragId")
+    private Collection<UserSettings> userSettingsCollection;
     @OneToMany(mappedBy = "zamerId")
     private Collection<OrdersTpOplaty> ordersTpOplatyCollection;
     private static final long serialVersionUID = 1L;
@@ -351,6 +353,15 @@ public class Kontragents implements Serializable {
 
     public void setOrdersTpOplatyCollection(Collection<OrdersTpOplaty> ordersTpOplatyCollection) {
         this.ordersTpOplatyCollection = ordersTpOplatyCollection;
+    }
+
+    @XmlTransient
+    public Collection<UserSettings> getUserSettingsCollection() {
+        return userSettingsCollection;
+    }
+
+    public void setUserSettingsCollection(Collection<UserSettings> userSettingsCollection) {
+        this.userSettingsCollection = userSettingsCollection;
     }
     
 }
