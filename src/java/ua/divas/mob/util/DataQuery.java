@@ -68,8 +68,8 @@ public class DataQuery {
     
     public Kontragents getCurrenZamer(String key){
         try {
-            Kontragents u = em.createNamedQuery("Kontragents.findByFullname", Kontragents.class)
-                    .setParameter("fullname", key)
+            Kontragents u = em.createNamedQuery("Kontragents.findById", Kontragents.class)
+                    .setParameter("id", key)
                     .getSingleResult();
             if (u != null) {
                 return u;

@@ -27,6 +27,8 @@ import ua.divas.mob.entity.Kontragents;
 import ua.divas.mob.entity.LastPrices;
 import ua.divas.mob.entity.Nomenklatura;
 import ua.divas.mob.entity.Orders;
+import ua.divas.mob.entity.UserSettings;
+import ua.divas.mob.entity.Users;
 import ua.divas.mob.util.DataQuery;
 import ua.divas.mob.util.DivasEntry;
 
@@ -114,7 +116,9 @@ public class OrdersTpUslugiController implements Serializable {
     
     protected Kontragents getCurrentZamer(){
         DataQuery q = new DataQuery();
-        return q.getCurrenZamer(q.getSessionScopeAttr("username"));
+        Users u = q.getCurrentUser(q.getSessionScopeAttr("username"));
+        UserSettings us = q.getCurrentUserSettings(u);
+        return q.getCurrenZamer(us.getZamerkontragId().getId());
     }
 
     protected void initializeEmbeddableKey() {

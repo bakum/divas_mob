@@ -16,6 +16,7 @@ import ua.divas.mob.entity.OrderStatus;
 import ua.divas.mob.entity.Orders;
 import ua.divas.mob.entity.OrdersTpOplaty;
 import ua.divas.mob.entity.OrdersTpUslugi;
+import ua.divas.mob.entity.UserSettings;
 import ua.divas.mob.entity.Users;
 import ua.divas.mob.util.WLS_Utility;
 
@@ -70,7 +71,8 @@ public class OrdersFacade extends AbstractFacade<Orders> {
         DataQuery q = getQuery();
         q.getSessionScopeAttr(un);
         Users u = q.getCurrentUser(q.getSessionScopeAttr(un));
-        return q.getCurrenZamer(u.getLogin());
+        UserSettings us = q.getCurrentUserSettings(u);
+        return q.getCurrenZamer(us.getZamerkontragId().getId());
     }
     
     public Orders refreshOrder(Orders o) {

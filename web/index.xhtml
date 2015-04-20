@@ -392,7 +392,7 @@
                             <p:commandLink action="pm:newjob" update =":uslugiList:listUslForm,:newjob:newjobform">
                                 <p:outputLabel style="font-weight: bold;" value="#{uslitem.groupId.fullname} - #{uslitem.nomId.fullname}"/>
                                 <p:outputLabel style="font-style: italic; font-size: 0.75em;" value="Сумма: #{uslitem.summ} грн.">
-                                    <f:convertNumber pattern="#0.00" locale="ru"/></p:outputLabel>
+                                    <f:convertNumber  minFractionDigits="2"/></p:outputLabel>
                                 <f:setPropertyActionListener value="false" target="#{ordersTpUslugiController.editable}" />
                                 <f:setPropertyActionListener value="#{uslitem}" target="#{ordersTpUslugiController.selected}" />
                             </p:commandLink>
@@ -498,7 +498,7 @@
                                 <p:inputText id="summ" value="#{ordersTpUslugiController.selected.summ}" title="Summ" required="true" requiredMessage="The Summ field is required."
                                              disabled="#{!p:ifGranted('administrator')}" style="margin: 5px" placeholder="Сумма">
                                     <f:validateDoubleRange minimum="0.00" maximum="1000000.00"/>
-                                    <f:convertNumber pattern="#0.00" locale="ru"/>
+                                    <f:convertNumber  minFractionDigits="2"/>
                                 </p:inputText>
                             </pm:field>
                         </p:panelGrid>
@@ -515,7 +515,7 @@
                                          disabled="#{empty ordersTpUslugiController.selected.addWork}"
                                          style="margin: 5px" placeholder="Доп. сумма">
                                 <f:validateDoubleRange minimum="0.00" maximum="1000000.00"/>
-                                <f:convertNumber pattern="#0.00" locale="ru"/>
+                                <f:convertNumber  minFractionDigits="2" locale="ru"/>
                                 <p:ajax update="msgaddprc" event="keyup"/>
                             </p:inputText>
                             <p:message id="msgaddprc" for="addPrice" display="tooltip" style="color: red;"/>
