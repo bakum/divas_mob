@@ -45,6 +45,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Users.findByPredefined", query = "SELECT u FROM Users u WHERE u.predefined = :predefined"),
     @NamedQuery(name = "Users.findByUDescription", query = "SELECT u FROM Users u WHERE u.uDescription = :uDescription")})
 public class Users implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<KassaSettings> kassaSettingsCollection;
     @Column(name = "IS_ZAMER")
     private Short isZamer;
     @OneToMany(mappedBy = "mainUser")
@@ -281,6 +283,15 @@ public class Users implements Serializable {
 
     public void setIsZamer(Short isZamer) {
         this.isZamer = isZamer;
+    }
+
+    @XmlTransient
+    public Collection<KassaSettings> getKassaSettingsCollection() {
+        return kassaSettingsCollection;
+    }
+
+    public void setKassaSettingsCollection(Collection<KassaSettings> kassaSettingsCollection) {
+        this.kassaSettingsCollection = kassaSettingsCollection;
     }
     
 }

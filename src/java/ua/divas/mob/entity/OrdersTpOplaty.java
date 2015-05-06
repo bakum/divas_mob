@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OrdersTpOplaty.findBySum", query = "SELECT o FROM OrdersTpOplaty o WHERE o.sum = :sum"),
     @NamedQuery(name = "OrdersTpOplaty.findByComments", query = "SELECT o FROM OrdersTpOplaty o WHERE o.comments = :comments")})
 public class OrdersTpOplaty implements Serializable {
+    @JoinColumn(name = "KASSA_ID", referencedColumnName = "ID")
+    @ManyToOne
+    private Kassa kassaId;
     @JoinColumn(name = "ZAMER_ID", referencedColumnName = "ID")
     @ManyToOne
     private Kontragents zamerId;
@@ -159,6 +162,14 @@ public class OrdersTpOplaty implements Serializable {
 
     public void setZamerId(Kontragents zamerId) {
         this.zamerId = zamerId;
+    }
+
+    public Kassa getKassaId() {
+        return kassaId;
+    }
+
+    public void setKassaId(Kassa kassaId) {
+        this.kassaId = kassaId;
     }
     
 }

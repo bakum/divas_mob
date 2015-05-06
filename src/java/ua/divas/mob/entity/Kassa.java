@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Kassa.findAll", query = "SELECT k FROM Kassa k"),
+    @NamedQuery(name = "Kassa.findBySettings", query = "SELECT k FROM Kassa k WHERE k.id IN (SELECT s.kassaId.id FROM KassaSettings s WHERE s.userId = :user_id)"),
     @NamedQuery(name = "Kassa.findById", query = "SELECT k FROM Kassa k WHERE k.id = :id"),
     @NamedQuery(name = "Kassa.findByFullname", query = "SELECT k FROM Kassa k WHERE k.fullname = :fullname"),
     @NamedQuery(name = "Kassa.findByIsGroup", query = "SELECT k FROM Kassa k WHERE k.isGroup = :isGroup"),
@@ -43,6 +44,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Kassa.findByPredefined", query = "SELECT k FROM Kassa k WHERE k.predefined = :predefined"),
     @NamedQuery(name = "Kassa.findByFirmaId", query = "SELECT k FROM Kassa k WHERE k.firmaId = :firmaId")})
 public class Kassa implements Serializable {
+    @OneToMany(mappedBy = "kassaId")
+    private Collection<OrdersTpOplaty> ordersTpOplatyCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "kassaId")
+    private Collection<KassaSettings> kassaSettingsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kassaId")
     private Collection<UserSettings> userSettingsCollection;
     private static final long serialVersionUID = 1L;
@@ -227,7 +232,7 @@ public class Kassa implements Serializable {
 
     @Override
     public String toString() {
-        return "ua.divas.mob.entity.Kassa[ id=" + id + " ]";
+        return fullname;
     }
 
     @XmlTransient
@@ -237,6 +242,24 @@ public class Kassa implements Serializable {
 
     public void setUserSettingsCollection(Collection<UserSettings> userSettingsCollection) {
         this.userSettingsCollection = userSettingsCollection;
+    }
+
+    @XmlTransient
+    public Collection<KassaSettings> getKassaSettingsCollection() {
+        return kassaSettingsCollection;
+    }
+
+    public void setKassaSettingsCollection(Collection<KassaSettings> kassaSettingsCollection) {
+        this.kassaSettingsCollection = kassaSettingsCollection;
+    }
+
+    @XmlTransient
+    public Collection<OrdersTpOplaty> getOrdersTpOplatyCollection() {
+        return ordersTpOplatyCollection;
+    }
+
+    public void setOrdersTpOplatyCollection(Collection<OrdersTpOplaty> ordersTpOplatyCollection) {
+        this.ordersTpOplatyCollection = ordersTpOplatyCollection;
     }
     
 }

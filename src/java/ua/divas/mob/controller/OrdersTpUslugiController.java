@@ -31,6 +31,7 @@ import ua.divas.mob.entity.UserSettings;
 import ua.divas.mob.entity.Users;
 import ua.divas.mob.util.DataQuery;
 import ua.divas.mob.util.DivasEntry;
+import ua.divas.mob.util.WLS_Utility;
 
 @ManagedBean(name = "ordersTpUslugiController")
 @SessionScoped
@@ -79,11 +80,11 @@ public class OrdersTpUslugiController implements Serializable {
             getSelected().setSumm(null);
         }
     }
-    
+
     public void reset() {
         RequestContext.getCurrentInstance().reset("editOplata:editOplForm");
     }
-    
+
     public void addChanged(AjaxBehaviorEvent e) {
         BigDecimal sm = getSelected().getSumm();
         BigDecimal ad = getSelected().getPriceAdd();
@@ -113,12 +114,17 @@ public class OrdersTpUslugiController implements Serializable {
 
     protected void setEmbeddableKeys() {
     }
-    
-    protected Kontragents getCurrentZamer(){
+
+    protected Kontragents getCurrentZamer() {
         DataQuery q = new DataQuery();
         Users u = q.getCurrentUser(q.getSessionScopeAttr("username"));
         UserSettings us = q.getCurrentUserSettings(u);
-        return q.getCurrenZamer(us.getZamerkontragId().getId());
+        boolean admin = WLS_Utility.isMember("administrator", q.getSessionScopeAttr("username"), true);
+        if (!admin) {
+            return q.getCurrenZamer(us.getZamerkontragId().getId());
+        } else {
+            return null;
+        }
     }
 
     protected void initializeEmbeddableKey() {
@@ -127,7 +133,7 @@ public class OrdersTpUslugiController implements Serializable {
         selected.setDatToPay(new Date());
         selected.setDatComplete(new Date());
         selected.setSotrId(getCurrentZamer());
-        
+
     }
 
     private OrdersTpUslugiFacade getFacade() {

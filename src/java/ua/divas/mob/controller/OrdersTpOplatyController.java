@@ -6,6 +6,7 @@ import ua.divas.mob.util.JsfUtil.PersistAction;
 import ua.divas.mob.session.OrdersTpOplatyFacade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -21,12 +22,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.AjaxBehaviorEvent;
+import ua.divas.mob.entity.Kassa;
 import ua.divas.mob.entity.Kontragents;
 import ua.divas.mob.util.DataQuery;
 import ua.divas.mob.entity.Orders;
 import ua.divas.mob.entity.UserSettings;
 import ua.divas.mob.entity.Users;
 import ua.divas.mob.util.DivasEntry;
+import ua.divas.mob.util.WLS_Utility;
 
 @ManagedBean(name = "ordersTpOplatyController")
 @SessionScoped
@@ -73,12 +77,17 @@ public class OrdersTpOplatyController implements Serializable {
         System.out.println(q.getCurrentUser(q.getSessionScopeAttr("username")));
         return q.getCurrentUser(q.getSessionScopeAttr("username"));
     }
-    
-    protected Kontragents getCurrentZamer(){
+
+    protected Kontragents getCurrentZamer() {
         DataQuery q = new DataQuery();
         Users u = q.getCurrentUser(q.getSessionScopeAttr("username"));
         UserSettings us = q.getCurrentUserSettings(u);
-        return q.getCurrenZamer(us.getZamerkontragId().getId());
+        boolean admin = WLS_Utility.isMember("administrator", q.getSessionScopeAttr("username"), true);
+        if (!admin) {
+            return q.getCurrenZamer(us.getZamerkontragId().getId());
+        } else {
+            return null;
+        }
     }
 
     private void initializeDefaultValue() {
@@ -106,6 +115,10 @@ public class OrdersTpOplatyController implements Serializable {
     }
 
     public String create() {
+        Kassa sk = getSelected().getKassaId();
+        if (sk != null) {
+            getSelected().setZamerId(null);
+        }
         persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("OrdersTpOplatyCreated"));
         if (!JsfUtil.isValidationFailed()) {
             items = null;    // Invalidate list of items to trigger re-query.
@@ -114,6 +127,10 @@ public class OrdersTpOplatyController implements Serializable {
     }
 
     public String update() {
+        Kassa sk = getSelected().getKassaId();
+        if (sk != null) {
+            getSelected().setZamerId(null);
+        }
         persist(PersistAction.UPDATE, ResourceBundle.getBundle("/Bundle").getString("OrdersTpOplatyUpdated"));
         return "pm:listOplat?transition=flip";
     }
@@ -186,6 +203,15 @@ public class OrdersTpOplatyController implements Serializable {
 
     public List<OrdersTpOplaty> getItemsAvailableSelectOne() {
         return getFacade().findAll();
+    }
+
+    public void kassaChanged(AjaxBehaviorEvent e) {
+        Kassa sk = getSelected().getKassaId();
+        if (sk != null) {
+            getSelected().setZamerId(null);
+        } else {
+            getSelected().setZamerId(getCurrentZamer());
+        }
     }
 
     @FacesConverter(forClass = OrdersTpOplaty.class)

@@ -36,10 +36,10 @@ public class OrdersController implements Serializable {
 
     public OrdersController() {
     }
-    
+
     public String refresh() {
         if (items != null) {
-            items = null;            
+            items = null;
         }
         selected = null;
         //return "pm:list";
@@ -51,21 +51,21 @@ public class OrdersController implements Serializable {
         int c = sl.getOrdersTpOplatyCollection().size();
         return c != 0;
     }
-    
-    public String colorStatusOpl(){
+
+    public String colorStatusOpl() {
         if (this.haveOplaty()) {
             return "color: blue;";
         }
         return "color: red";
     }
-    
+
     private void hardReset() {
         getFacade().refreshOrder(selected);
         items = null;
         items = getFacade().findAll();
         for (Orders element : items) {
             if (element.getId().equals(selected.getId())) {
-                
+
                 setSelected(element);
                 break;
             }
@@ -74,13 +74,13 @@ public class OrdersController implements Serializable {
         selected.getOrdersTpOplatyCollection();
         selected.getOrdersTpUslugiCollection();
     }
-    
+
     public String resetOplaty() {
         hardReset();
         RequestContext.getCurrentInstance().reset(":editOplata:editOplForm");
         return "pm:listOplat?transition=flip";
     }
-    
+
     public String resetUslugi() {
         hardReset();
         RequestContext.getCurrentInstance().reset(":newjob:newjobform");
@@ -93,34 +93,38 @@ public class OrdersController implements Serializable {
         Orders sl = this.getSelected();
         int c = sl.getOrdersTpOplatyCollection().size();
         if (c != 0) {
-            for (OrdersTpOplaty next : sl.getOrdersTpOplatyCollection()) {                
+            for (OrdersTpOplaty next : sl.getOrdersTpOplatyCollection()) {
                 sum = sum + next.getSum().floatValue();
             }
             //r = String.valueOf(sum);
-            return "Оплачено "+ String.format("%.2f",sum) +" грн";
+            return "Оплачено " + String.format("%.2f", sum) + " грн";
 
         } else {
             return "Заказ не оплачен!";
         }
     }
-    
+
     public boolean haveZamer() {
         Orders sl = this.getSelected();
         int c = sl.getOrdersTpUslugiCollection().size();
         return c != 0;
     }
-    
+
     public String zamerStatus() {
         //String r;
         double sum = 0.0;
         Orders sl = this.getSelected();
         int c = sl.getOrdersTpUslugiCollection().size();
         if (c != 0) {
-            for (OrdersTpUslugi next : sl.getOrdersTpUslugiCollection()) {                
-                sum = sum + next.getSumm().floatValue();
+            for (OrdersTpUslugi next : sl.getOrdersTpUslugiCollection()) {
+                if (next.getPriceAdd() != null) {
+                    sum = sum + next.getSumm().floatValue() + next.getPriceAdd().floatValue();
+                } else {
+                    sum = sum + next.getSumm().floatValue();
+                }
             }
-           // r = String.valueOf(sum);
-            return "Работы: "+ String.format("%.2f",sum) +" грн";
+            // r = String.valueOf(sum);
+            return "Работы: " + String.format("%.2f", sum) + " грн";
 
         } else {
             return "Работы не определены";

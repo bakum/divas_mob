@@ -104,7 +104,7 @@ public class KontragentsController implements Serializable{
         return getFacade().findZamer();
     }
     
-        @FacesConverter(forClass = Kontragents.class)
+    @FacesConverter(forClass = Kontragents.class)
     public static class KontragentsControllerConverter implements Converter {
 
         @Override

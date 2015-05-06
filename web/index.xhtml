@@ -74,14 +74,20 @@
                         </f:facet>                    
                     </p:toolbar>  
                     <p:outputPanel id="editFormPanel" >
-                        <pm:field>
+                        <p:panelGrid columns="2">
+                            <pm:field>
                             <p:outputLabel for="datzam" value="Время замера:" />
                             <p:inputText id="datzam" value="#{orders.selected.datZam}">
                                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                             </p:inputText>
                            <!-- <p:calendar locale="ru" pattern="dd/MM/yyyy HH:mm:ss" id="datzam" value="#{orders.selected.datZam}"/> -->
                         </pm:field>
-                        <p:panelGrid columns="2">
+                        <pm:field>
+                            <p:outputLabel for="datcomplete" value="Дата выполнения заказа:" />
+                            <p:inputText id="datcomplete" value="#{orders.selected.datComplete}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:inputText>
+                        </pm:field>
                             <pm:field>
                                 <p:outputLabel rendered="#{!orders.haveOplaty()}" style="color: red;font-size: 0.75em" id="statusop" value="#{orders.oplatyStatus()}" />
                                 <p:outputLabel rendered="#{orders.haveOplaty()}" style="color: blue;font-size: 0.75em" id="statusopl" value="#{orders.oplatyStatus()}" />
@@ -275,6 +281,17 @@
                         </p:inputText>
                         <p:message id="msgSumopl" for="sumopl" display="tooltip" style="color: red;"/>
                     </pm:field>
+                    <pm:field>
+                        <p:outputLabel for="userkassa" value="В кассу:" />
+                        <p:selectOneMenu id="userkassa" value="#{ordersTpOplatyController.selected.kassaId}"
+                                         required="false">
+                            <f:selectItem itemLabel="---" itemValue="#{null}" />
+                            <f:selectItems value="#{kassa_settings.itemsAvailableSelectOne}"
+                                           var="kassaIdItem" itemLabel="#{kassaIdItem.fullname}"
+                                           itemValue="#{kassaIdItem}"/>
+                         
+                        </p:selectOneMenu>
+                    </pm:field>
                     <pm:field rendered="#{p:ifGranted('administrator')}">
                         <p:outputLabel for="useropl" value="Ответственный:" />
                         <p:selectOneMenu id="useropl" value="#{ordersTpOplatyController.selected.userId}"
@@ -342,10 +359,21 @@
                         </p:inputText>
                         <p:message id="msgSumopl" for="sumopl" display="tooltip" style="color: red;"/>
                     </pm:field>
+                    <pm:field>
+                        <p:outputLabel for="userkassa" value="В кассу:" />
+                        <p:selectOneMenu id="userkassa" value="#{ordersTpOplatyController.selected.kassaId}"
+                                         required="false" immediate="true"> 
+                            <f:selectItem itemLabel="---" itemValue="#{null}" />
+                            <f:selectItems value="#{kassa_settings.itemsAvailableSelectOne}"
+                                           var="kassaIdItem" itemLabel="#{kassaIdItem.fullname}"
+                                           itemValue="#{kassaIdItem}"/>
+                       
+                        </p:selectOneMenu>
+                    </pm:field>
                     <pm:field rendered="#{p:ifGranted('administrator')}">
                         <p:outputLabel for="useropl" value="Ответственный:" />
                         <p:selectOneMenu id="useropl" value="#{ordersTpOplatyController.selected.userId}"
-                                         required="true"
+                                         required="true" immediate="true"
                                          requiredMessage="Пользователь обязателен для заполнения!" disabled="#{!p:ifGranted('administrator')}">
                             <f:selectItems value="#{usersController.itemsAvailableSelectOne}"
                                            var="userIdItem" itemLabel="#{userIdItem}"
@@ -391,7 +419,7 @@
                         <p:dataList id="listusl" var="uslitem" value="#{orders.selected.ordersTpUslugiCollection}">
                             <p:commandLink action="pm:newjob" update =":uslugiList:listUslForm,:newjob:newjobform">
                                 <p:outputLabel style="font-weight: bold;" value="#{uslitem.groupId.fullname} - #{uslitem.nomId.fullname}"/>
-                                <p:outputLabel style="font-style: italic; font-size: 0.75em;" value="Сумма: #{uslitem.summ} грн.">
+                                <p:outputLabel style="font-style: italic; font-size: 0.75em;" value="Сумма: #{uslitem.summ+uslitem.priceAdd} грн.">
                                     <f:convertNumber  minFractionDigits="2"/></p:outputLabel>
                                 <f:setPropertyActionListener value="false" target="#{ordersTpUslugiController.editable}" />
                                 <f:setPropertyActionListener value="#{uslitem}" target="#{ordersTpUslugiController.selected}" />
@@ -440,7 +468,8 @@
                         <pm:field>
                             <p:outputLabel value="Вид работ:" for="groupId" />
                             <p:selectOneMenu id="groupId" value="#{ordersTpUslugiController.selected.groupId}"
-                                             tabindex="0" immediate="true" >
+                                             tabindex="0" immediate="true" required="true" 
+                                             requiredMessage="Реквизит обязателен для заполнения">
                                 <f:selectItem itemLabel="---" itemValue="#{null}" />
                                 <f:selectItems value="#{nomenklaturaController.itemsGrpAvailableSelectOne}"
                                                var="grpIdItem" itemLabel="#{grpIdItem.fullname}"
