@@ -36,7 +36,7 @@
                             <p:panelGrid columns="2">
                                 <p:outputLabel for="dt_zam" style="font-size: 0.75em; color: brown;" value="Время замера:" />
                                 <p:outputLabel id="dt_zam" style="font-size: 0.75em; color: brown;" value="#{item.datZam}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="Europe/Kiev"/>
                                 </p:outputLabel>
                             </p:panelGrid>
                             <p:outputLabel style="font-size: 0.75em;" value="Менеджер: #{item.userId.login}"/>
@@ -78,7 +78,7 @@
                             <pm:field>
                             <p:outputLabel for="datzam" value="Время замера:" />
                             <p:inputText id="datzam" value="#{orders.selected.datZam}">
-                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="Europe/Kiev" />
                             </p:inputText>
                            <!-- <p:calendar locale="ru" pattern="dd/MM/yyyy HH:mm:ss" id="datzam" value="#{orders.selected.datZam}"/> -->
                         </pm:field>
